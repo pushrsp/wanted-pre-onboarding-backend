@@ -27,4 +27,4 @@
 - 작성자만 삭제 가능
 
 # 데이터베이스 관계도
-![데이터베이스_관계도](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/25714105-353b-42f4-971e-07ee09e07c25)
+![데이터베이스_관계도](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/73677046-2786-4aa7-8cfb-81f3401192e4)
