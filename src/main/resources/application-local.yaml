@@ -4,10 +4,13 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/PREONBOARDING_LOCAL
+    url: jdbc:mysql://127.0.0.1:3306/PREONBOARDING
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: root
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: create
