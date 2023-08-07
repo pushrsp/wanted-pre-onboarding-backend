@@ -56,6 +56,23 @@ class UserRepositoryTest extends IntegrationTestSupport {
         assertThat(u2.isPresent()).isFalse();
     }
 
+    @DisplayName("Email을 통해 User를 찾을 수 있다.")
+    @Test
+    public void can_find_user_by_email() throws Exception {
+        //given
+        String email = "addd@naver.com";
+        LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
+        User userDomain = createUserDomain(email, "test", now);
+
+        userRepository.save(userDomain);
+
+        //when
+        Optional<User> findUser = userRepository.findByEmail(email);
+
+        //then
+        assertThat(findUser.isPresent()).isTrue();
+    }
+
     private User createUserDomain(String email, String password, LocalDateTime createdTime) {
         return User.builder()
                 .email(email)
