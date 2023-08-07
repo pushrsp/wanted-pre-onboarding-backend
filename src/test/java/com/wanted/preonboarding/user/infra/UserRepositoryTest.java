@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -35,6 +36,24 @@ class UserRepositoryTest extends IntegrationTestSupport {
         assertThat(savedUser.getEmail()).isEqualTo(userDomain.getEmail());
         assertThat(savedUser.getPassword()).isEqualTo(userDomain.getPassword());
         assertThat(savedUser.getCreatedTime()).isEqualTo(userDomain.getCreatedTime());
+    }
+
+    @DisplayName("UserId를 통해 User를 찾을 수 있다.")
+    @Test
+    public void can_find_user_by_id() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
+        User userDomain = createUserDomain("abc@naver.com", "test", now);
+
+        User savedUser = userRepository.save(userDomain);
+
+        //when
+        Optional<User> u1 = userRepository.findById(savedUser.getId());
+        Optional<User> u2 = userRepository.findById(0L);
+
+        //then
+        assertThat(u1.isPresent()).isTrue();
+        assertThat(u2.isPresent()).isFalse();
     }
 
     private User createUserDomain(String email, String password, LocalDateTime createdTime) {
