@@ -25,4 +25,9 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         return userJpaRepository.save(UserEntity.from(user)).toDomain();
     }
+
+    @Override
+    public void deleteAllInBatch() {
+        userJpaRepository.deleteAllInBatch();
+    }
 }
