@@ -38,9 +38,6 @@ dependencies {
     //mysql driver
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    //h2
-    runtimeOnly 'com.h2database:h2'
-
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
