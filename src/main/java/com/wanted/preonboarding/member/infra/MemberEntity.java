@@ -1,7 +1,7 @@
-package com.wanted.preonboarding.user.infra;
+package com.wanted.preonboarding.member.infra;
 
 import com.wanted.preonboarding.article.infra.ArticleEntity;
-import com.wanted.preonboarding.user.domain.User;
+import com.wanted.preonboarding.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +14,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "USERS")
+@Table(name = "MEMBER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserEntity {
+public class MemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     @Column(name = "email", length = 70, nullable = false)
@@ -31,27 +31,27 @@ public class UserEntity {
     @Column(name = "created_time", nullable = false)
     private LocalDateTime createdTime;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private List<ArticleEntity> articles = new ArrayList<>();
 
     @Builder
-    private UserEntity(Long id, String email, String password, LocalDateTime createdTime) {
+    private MemberEntity(Long id, String email, String password, LocalDateTime createdTime) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.createdTime = createdTime;
     }
 
-    public static UserEntity from(User user) {
-        return UserEntity.builder()
+    public static MemberEntity from(Member user) {
+        return MemberEntity.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .createdTime(user.getCreatedTime())
                 .build();
     }
 
-    public User toDomain() {
-        return User.builder()
+    public Member toDomain() {
+        return Member.builder()
                 .id(this.id)
                 .email(this.email)
                 .password(this.password)

@@ -1,7 +1,7 @@
-package com.wanted.preonboarding.user.infra;
+package com.wanted.preonboarding.member.infra;
 
 import com.wanted.preonboarding.IntegrationTestSupport;
-import com.wanted.preonboarding.user.domain.User;
+import com.wanted.preonboarding.member.domain.Member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,13 +12,13 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class UserRepositoryTest extends IntegrationTestSupport {
+class MemberRepositoryTest extends IntegrationTestSupport {
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
     }
 
     @DisplayName("UserDomain을 통해 User를 생성할 수 있다.")
@@ -26,10 +26,10 @@ class UserRepositoryTest extends IntegrationTestSupport {
     public void can_save_user_by_user_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        User userDomain = createUserDomain("abc@naver.com", "test", now);
+        Member userDomain = createUserDomain("abc@naver.com", "test", now);
 
         //when
-        User savedUser = userRepository.save(userDomain);
+        Member savedUser = memberRepository.save(userDomain);
 
         //then
         assertThat(savedUser.getId()).isNotNull();
@@ -43,13 +43,13 @@ class UserRepositoryTest extends IntegrationTestSupport {
     public void can_find_user_by_id() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        User userDomain = createUserDomain("abc@naver.com", "test", now);
+        Member userDomain = createUserDomain("abc@naver.com", "test", now);
 
-        User savedUser = userRepository.save(userDomain);
+        Member savedUser = memberRepository.save(userDomain);
 
         //when
-        Optional<User> u1 = userRepository.findById(savedUser.getId());
-        Optional<User> u2 = userRepository.findById(0L);
+        Optional<Member> u1 = memberRepository.findById(savedUser.getId());
+        Optional<Member> u2 = memberRepository.findById(0L);
 
         //then
         assertThat(u1.isPresent()).isTrue();
@@ -62,19 +62,19 @@ class UserRepositoryTest extends IntegrationTestSupport {
         //given
         String email = "addd@naver.com";
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        User userDomain = createUserDomain(email, "test", now);
+        Member userDomain = createUserDomain(email, "test", now);
 
-        userRepository.save(userDomain);
+        memberRepository.save(userDomain);
 
         //when
-        Optional<User> findUser = userRepository.findByEmail(email);
+        Optional<Member> findUser = memberRepository.findByEmail(email);
 
         //then
         assertThat(findUser.isPresent()).isTrue();
     }
 
-    private User createUserDomain(String email, String password, LocalDateTime createdTime) {
-        return User.builder()
+    private Member createUserDomain(String email, String password, LocalDateTime createdTime) {
+        return Member.builder()
                 .email(email)
                 .password(password)
                 .createdTime(createdTime)

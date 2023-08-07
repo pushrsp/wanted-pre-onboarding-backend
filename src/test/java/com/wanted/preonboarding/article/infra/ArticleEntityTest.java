@@ -2,7 +2,7 @@ package com.wanted.preonboarding.article.infra;
 
 import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.content.domain.Content;
-import com.wanted.preonboarding.user.domain.User;
+import com.wanted.preonboarding.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class ArticleEntityTest {
     public void can_create_article_entity_from_article_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
-        User userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
+        Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
         Content contentDomain = createContentDomain(1L, "content");
         Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain, contentDomain);
 
@@ -37,7 +37,7 @@ class ArticleEntityTest {
     public void article_entity_can_convert_to_article_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
-        User userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
+        Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
         Content contentDomain = createContentDomain(1L, "content");
 
         ArticleEntity articleEntity = ArticleEntity.from(createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain, contentDomain));
@@ -60,8 +60,8 @@ class ArticleEntityTest {
                 .build();
     }
 
-    private User createUserDomain(Long id, String email, String password, LocalDateTime createdTime) {
-        return User.builder()
+    private Member createUserDomain(Long id, String email, String password, LocalDateTime createdTime) {
+        return Member.builder()
                 .id(id)
                 .email(email)
                 .password(password)
@@ -69,7 +69,7 @@ class ArticleEntityTest {
                 .build();
     }
 
-    private Article createArticleDomain(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, User user, Content content) {
+    private Article createArticleDomain(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Member user, Content content) {
         return Article.builder()
                 .id(id)
                 .title(title)

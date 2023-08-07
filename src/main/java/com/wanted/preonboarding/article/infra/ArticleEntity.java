@@ -2,7 +2,7 @@ package com.wanted.preonboarding.article.infra;
 
 import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.content.infra.ContentEntity;
-import com.wanted.preonboarding.user.infra.UserEntity;
+import com.wanted.preonboarding.member.infra.MemberEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,20 +35,20 @@ public class ArticleEntity {
     private LocalDateTime modifiedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "member_id")
+    private MemberEntity member;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
     private ContentEntity content;
 
     @Builder
-    private ArticleEntity(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, UserEntity user, ContentEntity content) {
+    private ArticleEntity(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, MemberEntity member, ContentEntity content) {
         this.id = id;
         this.title = title;
         this.createdTime = createdTime;
         this.createdDate = createdDate;
         this.modifiedTime = modifiedTime;
-        this.user = user;
+        this.member = member;
         this.content = content;
     }
 
@@ -58,7 +58,7 @@ public class ArticleEntity {
                 .createdTime(article.getCreatedTime())
                 .createdDate(article.getCreatedDate())
                 .modifiedTime(article.getModifiedTime())
-                .user(UserEntity.from(article.getUser()))
+                .member(MemberEntity.from(article.getUser()))
                 .content(ContentEntity.from(article.getContent()))
                 .build();
     }

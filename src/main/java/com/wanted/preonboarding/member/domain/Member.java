@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.user.domain;
+package com.wanted.preonboarding.member.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,14 +6,14 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class User {
+public class Member {
     private Long id;
     private String email;
     private String password;
     private LocalDateTime createdTime;
 
     @Builder
-    private User(Long id, String email, String password, LocalDateTime createdTime) {
+    private Member(Long id, String email, String password, LocalDateTime createdTime) {
         this.id = id;
         this.email = email;
         this.password = password;

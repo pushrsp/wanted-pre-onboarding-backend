@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.article.domain;
 
 import com.wanted.preonboarding.content.domain.Content;
-import com.wanted.preonboarding.user.domain.User;
+import com.wanted.preonboarding.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 public class Article {
     private Long id;
     private String title;
-    private User user;
+    private Member user;
     private Content content;
     private LocalDateTime createdTime;
     private LocalDate createdDate;
     private LocalDateTime modifiedTime;
 
     @Builder
-    private Article(Long id, String title, User user, Content content , LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime) {
+    private Article(Long id, String title, Member user, Content content , LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime) {
         this.id = id;
         this.title = title;
         this.user = user;
