@@ -25,3 +25,6 @@
 ### api/articles/{articleId} [DELETE] -> 특정 게시글 삭제
 - 게시글 ID 입력
 - 작성자만 삭제 가능
+
+# 데이터베이스 관계도
+![데이터베이스_관계도](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/25714105-353b-42f4-971e-07ee09e07c25)
