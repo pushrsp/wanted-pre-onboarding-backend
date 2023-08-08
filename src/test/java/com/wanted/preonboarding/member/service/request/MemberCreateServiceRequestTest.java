@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 class MemberCreateServiceRequestTest {
-    @DisplayName("주어진 이메일을 통해 이메을 검증을 할 수 있다.")
+    @DisplayName("주어진 이메일을 통해 이메일을 검증을 할 수 있다.")
     @ParameterizedTest
     @MethodSource("provideEmail")
     public void can_detect_email_is_valid(String email, boolean expected) throws Exception {
