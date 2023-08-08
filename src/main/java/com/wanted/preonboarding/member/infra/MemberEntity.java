@@ -42,11 +42,12 @@ public class MemberEntity {
         this.createdTime = createdTime;
     }
 
-    public static MemberEntity from(Member user) {
+    public static MemberEntity from(Member member) {
         return MemberEntity.builder()
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .createdTime(user.getCreatedTime())
+                .id(member.getId())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .createdTime(member.getCreatedTime())
                 .build();
     }
 

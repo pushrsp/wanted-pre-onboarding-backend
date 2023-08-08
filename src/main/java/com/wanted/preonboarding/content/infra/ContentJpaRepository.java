@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ContentJpaRepository extends JpaRepository<ContentEntity, Long> {
-    @Query(value = "select c from CONTENT c where c.article_id = :articleId", nativeQuery = true)
+    @Query("select c from ContentEntity c join fetch c.article where c.article.id = :articleId")
     Optional<ContentEntity> findByArticleId(@Param("articleId") Long articleId);
 }

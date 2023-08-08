@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface ContentRepository {
     Optional<Content> findByArticleId(Long articleId);
+    void deleteAllInBatch();
 }

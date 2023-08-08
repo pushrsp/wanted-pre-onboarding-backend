@@ -11,9 +11,10 @@ public class Content {
     private Article article;
 
     @Builder
-    private Content(Long id, String content) {
+    private Content(Long id, String content, Article article) {
         this.id = id;
         this.content = content;
+        this.article = article;
     }
 
     public void addArticle(Article article) {

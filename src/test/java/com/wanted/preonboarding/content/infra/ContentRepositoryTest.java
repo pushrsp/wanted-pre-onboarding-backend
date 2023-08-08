@@ -1,9 +1,9 @@
-package com.wanted.preonboarding.article.infra;
+package com.wanted.preonboarding.content.infra;
 
 import com.wanted.preonboarding.IntegrationTestSupport;
 import com.wanted.preonboarding.article.domain.Article;
+import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.content.domain.Content;
-import com.wanted.preonboarding.content.infra.ContentRepository;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.infra.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -17,15 +17,15 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class ArticleRepositoryTest extends IntegrationTestSupport {
+class ContentRepositoryTest extends IntegrationTestSupport {
+    @Autowired
+    private ContentRepository contentRepository;
+
     @Autowired
     private ArticleRepository articleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private ContentRepository contentRepository;
 
     @AfterEach
     void tearDown() {
@@ -34,26 +34,9 @@ class ArticleRepositoryTest extends IntegrationTestSupport {
         memberRepository.deleteAllInBatch();
     }
 
-    @DisplayName("ArticleDomain을 통해 Article을 생성할 수 있다.")
+    @DisplayName("ArticleId를 통해 Content를 찾을 수 있다.")
     @Test
-    public void can_save_article_by_article_domain() throws Exception {
-        //given
-        LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        Member savedMember = memberRepository.save(createMemberDomain("abc@naver.com", "test", now));
-
-        Article articleDomain = createArticleDomain(now, now.toLocalDate(), now, savedMember);
-        articleDomain.addContent(createContentDomain());
-
-        //when
-        Article savedArticle = articleRepository.save(articleDomain);
-
-        //then
-        assertThat(savedArticle.getId()).isNotNull();
-    }
-
-    @DisplayName("ArticleId를 통해 Article을 삭제할 수 있다.")
-    @Test
-    public void can_delete_article_by_id() throws Exception {
+    public void can_find_content_by_article_id() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
         Member savedMember = memberRepository.save(createMemberDomain("abc@naver.com", "test", now));
@@ -64,11 +47,12 @@ class ArticleRepositoryTest extends IntegrationTestSupport {
         Article savedArticle = articleRepository.save(articleDomain);
 
         //when
-        articleRepository.delete(savedArticle.getId());
+        Optional<Content> optionalContent = contentRepository.findByArticleId(savedArticle.getId());
 
         //then
-        Optional<Article> optionalArticle = articleRepository.findById(savedArticle.getId());
-        assertThat(optionalArticle.isEmpty()).isTrue();
+        assertThat(optionalContent.isPresent()).isTrue();
+        assertThat(optionalContent.get().getContent()).isEqualTo(articleDomain.getContent().getContent());
+        assertThat(optionalContent.get().getArticle().getTitle()).isEqualTo(articleDomain.getTitle());
     }
 
     private Member createMemberDomain(String email, String password, LocalDateTime createdTime) {

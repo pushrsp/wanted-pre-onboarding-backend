@@ -49,4 +49,12 @@ public class ContentEntity {
                 .content(this.content)
                 .build();
     }
+
+    public Content toDomainWithArticle() {
+        return Content.builder()
+                .id(this.id)
+                .content(this.content)
+                .article(this.article.toDomain())
+                .build();
+    }
 }

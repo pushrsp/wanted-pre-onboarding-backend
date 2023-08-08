@@ -2,10 +2,8 @@ package com.wanted.preonboarding;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
-public class RepositoryIntegrationTestSupport {
+public class IntegrationTestSupport {
 }
