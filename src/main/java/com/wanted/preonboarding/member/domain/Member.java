@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.member.domain;
 
+import com.wanted.preonboarding.common.service.password.PasswordService;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,11 +21,13 @@ public class Member {
         this.createdTime = createdTime;
     }
 
-    public void validate() {
-        //TODO
+    public void signup(PasswordService passwordService) {
+        this.password = passwordService.hash(this.password);
     }
 
-    public void login(String username, String password) {
-        //TODO
+    public void login(String plainPassword, PasswordService passwordService) {
+        if(!passwordService.verify(plainPassword, this.password)) {
+            throw new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
     }
 }

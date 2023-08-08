@@ -1,3 +1,7 @@
+token:
+  secret: "test"
+  offset: 2000 # 2초
+
 spring:
   config:
     activate:
