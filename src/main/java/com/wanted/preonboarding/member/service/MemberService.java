@@ -10,6 +10,7 @@ import com.wanted.preonboarding.member.service.request.MemberLoginServiceRequest
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class MemberService {
     @Value("${token.offset}")
     private Long offset;
 
+    @Transactional
     public void create(MemberCreateServiceRequest request) {
         verifyMember(request);
 
@@ -34,6 +36,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public String login(MemberLoginServiceRequest request) {
         Member member = getByEmail(request.getEmail());
         member.login(request.getPassword(), passwordService);
