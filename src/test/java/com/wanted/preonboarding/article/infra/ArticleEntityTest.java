@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.*;
 
 class ArticleEntityTest {
-    @DisplayName("ArticleEntity는 ArticleDomain으로 부 생성할 수 있다.")
+    @DisplayName("ArticleEntity는 ArticleDomain으로 생성할 수 있다.")
     @Test
     public void can_create_article_entity_from_article_domain() throws Exception {
         //given
