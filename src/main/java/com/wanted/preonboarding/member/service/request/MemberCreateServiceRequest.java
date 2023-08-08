@@ -27,7 +27,7 @@ public class MemberCreateServiceRequest {
         Pattern p = Pattern.compile(EMAIL_REGEX);
         Matcher m = p.matcher(this.email);
 
-        return !m.matches();
+        return m.matches();
     }
 
     public boolean verifyPassword() {
