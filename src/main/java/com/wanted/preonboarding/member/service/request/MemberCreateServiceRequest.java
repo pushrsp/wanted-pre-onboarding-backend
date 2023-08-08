@@ -4,6 +4,7 @@ import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +32,10 @@ public class MemberCreateServiceRequest {
     }
 
     public boolean verifyPassword() {
+        if(!StringUtils.hasText(this.password)) {
+            return false;
+        }
+
         return PASSWORD_MIN_LEN <= this.password.length() && this.password.length() <= PASSWORD_MAX_LEN;
     }
 
