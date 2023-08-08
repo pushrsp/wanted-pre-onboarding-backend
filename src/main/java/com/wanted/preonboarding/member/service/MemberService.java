@@ -8,6 +8,7 @@ import com.wanted.preonboarding.member.infra.MemberRepository;
 import com.wanted.preonboarding.member.service.request.MemberCreateServiceRequest;
 import com.wanted.preonboarding.member.service.request.MemberLoginServiceRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,12 @@ public class MemberService {
     private final PasswordService passwordService;
     private final DateService dateService;
     private final TokenService tokenService;
+
+    @Value("${token.secret}")
+    private String secret;
+
+    @Value("${token.offset}")
+    private Long offset;
 
     public void create(MemberCreateServiceRequest request) {
         verifyMember(request);
@@ -28,7 +35,10 @@ public class MemberService {
     }
 
     public String login(MemberLoginServiceRequest request) {
-        return "token";
+        Member member = getByEmail(request.getEmail());
+        member.login(request.getPassword(), passwordService);
+
+        return tokenService.generate(member.getId().toString(), secret, offset);
     }
 
     private void verifyMember(MemberCreateServiceRequest request) {
@@ -43,5 +53,10 @@ public class MemberService {
         memberRepository.findByEmail(request.getEmail()).ifPresent((m) -> {
             throw new IllegalArgumentException("다른 이메일을 사용해주세요.");
         });
+    }
+
+    //FIXME: NotFoundException 변경
+    private Member getByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다."));
     }
 }

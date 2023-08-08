@@ -25,7 +25,9 @@ public class Member {
         this.password = passwordService.hash(this.password);
     }
 
-    public void login(String username, String password) {
-        //TODO
+    public void login(String plainPassword, PasswordService passwordService) {
+        if(!passwordService.verify(plainPassword, this.password)) {
+            throw new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
     }
 }
