@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -38,6 +39,26 @@ class ArticleRepositoryTest extends RepositoryIntegrationTestSupport {
 
         //then
         assertThat(savedArticle.getId()).isNotNull();
+    }
+
+    @DisplayName("ArticleId를 통해 Article을 삭제할 수 있다.")
+    @Test
+    public void can_delete_article_by_id() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
+        Member savedMember = memberRepository.save(createMemberDomain("abc@naver.com", "test", now));
+
+        Article articleDomain = createArticleDomain(now, now.toLocalDate(), now, savedMember);
+        articleDomain.addContent(createContentDomain());
+
+        Article savedArticle = articleRepository.save(articleDomain);
+
+        //when
+        articleRepository.delete(savedArticle.getId());
+
+        //then
+        Optional<Article> optionalArticle = articleRepository.findById(savedArticle.getId());
+        assertThat(optionalArticle.isEmpty()).isTrue();
     }
 
     private Member createMemberDomain(String email, String password, LocalDateTime createdTime) {
