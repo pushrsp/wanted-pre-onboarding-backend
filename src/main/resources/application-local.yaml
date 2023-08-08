@@ -1,3 +1,7 @@
+token:
+  secret: "local"
+  offset: 86400000 # 하루
+
 spring:
   config:
     import: application-common.yaml
