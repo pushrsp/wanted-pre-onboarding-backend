@@ -1,8 +1,7 @@
 package com.wanted.preonboarding.member.infra;
 
-import com.wanted.preonboarding.IntegrationTestSupport;
+import com.wanted.preonboarding.RepositoryIntegrationTestSupport;
 import com.wanted.preonboarding.member.domain.Member;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +11,25 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class MemberRepositoryTest extends IntegrationTestSupport {
+class MemberRepositoryTest extends RepositoryIntegrationTestSupport {
     @Autowired
     private MemberRepository memberRepository;
-
-    @AfterEach
-    void tearDown() {
-        memberRepository.deleteAllInBatch();
-    }
 
     @DisplayName("UserDomain을 통해 User를 생성할 수 있다.")
     @Test
     public void can_save_user_by_user_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        Member userDomain = createUserDomain("abc@naver.com", "test", now);
+        Member memberDomain = createMemberDomain("test@naver.com", "test", now);
 
         //when
-        Member savedUser = memberRepository.save(userDomain);
+        Member savedUser = memberRepository.save(memberDomain);
 
         //then
         assertThat(savedUser.getId()).isNotNull();
-        assertThat(savedUser.getEmail()).isEqualTo(userDomain.getEmail());
-        assertThat(savedUser.getPassword()).isEqualTo(userDomain.getPassword());
-        assertThat(savedUser.getCreatedTime()).isEqualTo(userDomain.getCreatedTime());
+        assertThat(savedUser.getEmail()).isEqualTo(memberDomain.getEmail());
+        assertThat(savedUser.getPassword()).isEqualTo(memberDomain.getPassword());
+        assertThat(savedUser.getCreatedTime()).isEqualTo(memberDomain.getCreatedTime());
     }
 
     @DisplayName("UserId를 통해 User를 찾을 수 있다.")
@@ -43,9 +37,9 @@ class MemberRepositoryTest extends IntegrationTestSupport {
     public void can_find_user_by_id() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        Member userDomain = createUserDomain("abc@naver.com", "test", now);
+        Member memberDomain = createMemberDomain("abc@naver.com", "test", now);
 
-        Member savedUser = memberRepository.save(userDomain);
+        Member savedUser = memberRepository.save(memberDomain);
 
         //when
         Optional<Member> u1 = memberRepository.findById(savedUser.getId());
@@ -62,9 +56,9 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         //given
         String email = "addd@naver.com";
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
-        Member userDomain = createUserDomain(email, "test", now);
+        Member memberDomain = createMemberDomain(email, "test", now);
 
-        memberRepository.save(userDomain);
+        memberRepository.save(memberDomain);
 
         //when
         Optional<Member> findUser = memberRepository.findByEmail(email);
@@ -73,7 +67,7 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(findUser.isPresent()).isTrue();
     }
 
-    private Member createUserDomain(String email, String password, LocalDateTime createdTime) {
+    private Member createMemberDomain(String email, String password, LocalDateTime createdTime) {
         return Member.builder()
                 .email(email)
                 .password(password)

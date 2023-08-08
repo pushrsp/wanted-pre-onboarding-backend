@@ -18,8 +18,9 @@ class ArticleEntityTest {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
         Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
-        Content contentDomain = createContentDomain(1L, "content");
-        Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain, contentDomain);
+
+        Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain);
+        articleDomain.addContent(createContentDomain(1L, "content"));
 
         //when
         ArticleEntity articleEntity = ArticleEntity.from(articleDomain);
@@ -38,19 +39,20 @@ class ArticleEntityTest {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
         Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
-        Content contentDomain = createContentDomain(1L, "content");
 
-        ArticleEntity articleEntity = ArticleEntity.from(createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain, contentDomain));
+        Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain);
+        articleDomain.addContent(createContentDomain(1L, "content"));
+        ArticleEntity articleEntity = ArticleEntity.from(articleDomain);
 
         //when
-        Article articleDomain = articleEntity.toDomain();
+        Article result = articleEntity.toDomain();
 
         //then
-        assertThat(articleDomain.getId()).isEqualTo(articleEntity.getId());
-        assertThat(articleDomain.getTitle()).isEqualTo(articleEntity.getTitle());
-        assertThat(articleDomain.getCreatedTime()).isEqualTo(articleEntity.getCreatedTime());
-        assertThat(articleDomain.getCreatedDate()).isEqualTo(articleEntity.getCreatedDate());
-        assertThat(articleDomain.getModifiedTime()).isEqualTo(articleEntity.getModifiedTime());
+        assertThat(result.getId()).isEqualTo(articleEntity.getId());
+        assertThat(result.getTitle()).isEqualTo(articleEntity.getTitle());
+        assertThat(result.getCreatedTime()).isEqualTo(articleEntity.getCreatedTime());
+        assertThat(result.getCreatedDate()).isEqualTo(articleEntity.getCreatedDate());
+        assertThat(result.getModifiedTime()).isEqualTo(articleEntity.getModifiedTime());
     }
 
     private Content createContentDomain(Long id, String content) {
@@ -69,15 +71,14 @@ class ArticleEntityTest {
                 .build();
     }
 
-    private Article createArticleDomain(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Member user, Content content) {
+    private Article createArticleDomain(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Member member) {
         return Article.builder()
                 .id(id)
                 .title(title)
                 .createdTime(createdTime)
                 .createdDate(createdDate)
                 .modifiedTime(modifiedTime)
-                .user(user)
-                .content(content)
+                .member(member)
                 .build();
     }
 }
