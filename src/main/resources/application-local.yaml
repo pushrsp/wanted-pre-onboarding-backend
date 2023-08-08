@@ -6,8 +6,8 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/PREONBOARDING
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: sa
-    password:
+    username: root
+    password: root
   h2:
     console:
       enabled: true
