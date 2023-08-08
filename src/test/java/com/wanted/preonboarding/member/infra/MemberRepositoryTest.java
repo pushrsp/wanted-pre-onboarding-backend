@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.member.infra;
 
-import com.wanted.preonboarding.RepositoryIntegrationTestSupport;
+import com.wanted.preonboarding.IntegrationTestSupport;
 import com.wanted.preonboarding.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class MemberRepositoryTest extends RepositoryIntegrationTestSupport {
+class MemberRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private MemberRepository memberRepository;
 

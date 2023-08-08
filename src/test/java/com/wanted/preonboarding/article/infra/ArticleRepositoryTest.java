@@ -1,14 +1,15 @@
 package com.wanted.preonboarding.article.infra;
 
-import com.wanted.preonboarding.RepositoryIntegrationTestSupport;
+import com.wanted.preonboarding.IntegrationTestSupport;
 import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.content.domain.Content;
+import com.wanted.preonboarding.content.infra.ContentRepository;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.infra.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,13 +17,22 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Transactional
-class ArticleRepositoryTest extends RepositoryIntegrationTestSupport {
+class ArticleRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private ArticleRepository articleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ContentRepository contentRepository;
+
+    @AfterEach
+    void tearDown() {
+        contentRepository.deleteAllInBatch();
+        articleRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
+    }
 
     @DisplayName("ArticleDomain을 통해 Article을 생성할 수 있다.")
     @Test
