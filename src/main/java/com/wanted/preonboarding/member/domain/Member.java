@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.member.domain;
 
+import com.wanted.preonboarding.common.service.password.PasswordService;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,8 +21,8 @@ public class Member {
         this.createdTime = createdTime;
     }
 
-    public void validate() {
-        //TODO
+    public void signup(PasswordService passwordService) {
+        this.password = passwordService.hash(this.password);
     }
 
     public void login(String username, String password) {
