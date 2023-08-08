@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -25,14 +26,17 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article update(Article article) {
-        //TODO
-        ArticleEntity articleEntity = articleJpaRepository.findById(article.getId()).orElseThrow();
-        return null;
+    public void delete(Long id) {
+        articleJpaRepository.deleteById(id);
     }
 
     @Override
-    public void delete(Long id) {
-        articleJpaRepository.deleteById(id);
+    public Optional<Article> findById(Long id) {
+        return articleJpaRepository.findById(id).map(ArticleEntity::toDomain);
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+        articleJpaRepository.deleteAllInBatch();
     }
 }
