@@ -13,6 +13,11 @@ public class ContentRepositoryImpl implements ContentRepository {
 
     @Override
     public Optional<Content> findByArticleId(Long articleId) {
-        return contentJpaRepository.findByArticleId(articleId).map(ContentEntity::toDomain);
+        return contentJpaRepository.findByArticleId(articleId).map(ContentEntity::toDomainWithArticle);
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+        contentJpaRepository.deleteAllInBatch();
     }
 }
