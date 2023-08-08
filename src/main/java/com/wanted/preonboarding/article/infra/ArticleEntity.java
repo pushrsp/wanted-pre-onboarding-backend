@@ -53,14 +53,27 @@ public class ArticleEntity {
     }
 
     public static ArticleEntity from(Article article) {
-        return ArticleEntity.builder()
+        ArticleEntity articleEntity = ArticleEntity.builder()
                 .title(article.getTitle())
                 .createdTime(article.getCreatedTime())
                 .createdDate(article.getCreatedDate())
                 .modifiedTime(article.getModifiedTime())
-                .member(MemberEntity.from(article.getUser()))
-                .content(ContentEntity.from(article.getContent()))
                 .build();
+
+        articleEntity.addMember(MemberEntity.from(article.getMember()));
+        articleEntity.addContent(ContentEntity.from(article.getContent()));
+
+        return articleEntity;
+    }
+
+    private void addMember(MemberEntity member) {
+        this.member = member;
+        this.member.addArticle(this);
+    }
+
+    private void addContent(ContentEntity content) {
+        this.content = content;
+        this.content.addArticle(this);
     }
 
     public Article toDomain() {

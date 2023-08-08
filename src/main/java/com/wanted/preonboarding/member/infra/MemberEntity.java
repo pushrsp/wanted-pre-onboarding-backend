@@ -50,6 +50,10 @@ public class MemberEntity {
                 .build();
     }
 
+    public void addArticle(ArticleEntity article) {
+        this.articles.add(article);
+    }
+
     public Member toDomain() {
         return Member.builder()
                 .id(this.id)

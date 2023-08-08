@@ -39,6 +39,10 @@ public class ContentEntity {
                 .build();
     }
 
+    public void addArticle(ArticleEntity article) {
+        this.article = article;
+    }
+
     public Content toDomain() {
         return Content.builder()
                 .id(this.id)
