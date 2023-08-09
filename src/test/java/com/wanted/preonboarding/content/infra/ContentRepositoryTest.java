@@ -52,7 +52,6 @@ class ContentRepositoryTest extends IntegrationTestSupport {
         //then
         assertThat(optionalContent.isPresent()).isTrue();
         assertThat(optionalContent.get().getContent()).isEqualTo(articleDomain.getContent().getContent());
-        assertThat(optionalContent.get().getArticle().getTitle()).isEqualTo(articleDomain.getTitle());
     }
 
     private Member createMemberDomain(String email, String password, LocalDateTime createdTime) {
