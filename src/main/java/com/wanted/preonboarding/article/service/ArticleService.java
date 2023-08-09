@@ -19,8 +19,8 @@ public class ArticleService {
 
     private final DateService dateService;
 
-    public void save(ArticleCreateServiceRequest request) {
-        articleRepository.save(request.toDomain(dateService));
+    public Article save(ArticleCreateServiceRequest request) {
+        return articleRepository.save(request.toDomain(dateService));
     }
 
     public Content getById(Long articleId) {
