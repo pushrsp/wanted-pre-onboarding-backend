@@ -4,6 +4,7 @@ import com.wanted.preonboarding.IntegrationTestSupport;
 import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
+import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
@@ -105,6 +106,26 @@ class ArticleServiceTest extends IntegrationTestSupport {
         //then
         assertThat(content.getContent()).isEqualTo(savedArticle.getContent().getContent());
         assertThat(content.getId()).isEqualTo(savedArticle.getContent().getId());
+    }
+
+    @DisplayName("articleId와 memberId를 통해 article을 삭제할 수 있다.")
+    @Test
+    public void can_delete_article_by_articleId_and_memberId() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
+        Article savedArticle = saveArticle(now, "title", "content");
+
+        ArticleDeleteServiceRequest request = ArticleDeleteServiceRequest.builder()
+                .articleId(savedArticle.getId())
+                .memberId(savedArticle.getMember().getId())
+                .build();
+
+        //when
+        articleService.delete(request);
+
+        //then
+        Optional<Article> optionalArticle = articleRepository.findById(savedArticle.getId());
+        assertThat(optionalArticle.isEmpty()).isTrue();
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {
