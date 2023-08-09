@@ -22,7 +22,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        return articleJpaRepository.save(ArticleEntity.from(article)).toDomain();
+        return articleJpaRepository.save(ArticleEntity.from(article)).toDomainWithMemberAndContent();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        return articleJpaRepository.findById(id).map(ArticleEntity::toDomain);
+        return articleJpaRepository.findById(id).map(ArticleEntity::toDomainWithMemberAndContent);
     }
 
     @Override

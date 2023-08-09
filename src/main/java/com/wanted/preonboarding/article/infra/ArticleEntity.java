@@ -54,6 +54,7 @@ public class ArticleEntity {
 
     public static ArticleEntity from(Article article) {
         ArticleEntity articleEntity = ArticleEntity.builder()
+                .id(article.getId())
                 .title(article.getTitle())
                 .createdTime(article.getCreatedTime())
                 .createdDate(article.getCreatedDate())
@@ -80,6 +81,18 @@ public class ArticleEntity {
         return Article.builder()
                 .id(this.id)
                 .title(this.title)
+                .createdTime(this.createdTime)
+                .createdDate(this.createdDate)
+                .modifiedTime(this.modifiedTime)
+                .build();
+    }
+
+    public Article toDomainWithMemberAndContent() {
+        return Article.builder()
+                .id(this.id)
+                .title(this.title)
+                .member(this.member.toDomain())
+                .content(this.content.toDomain())
                 .createdTime(this.createdTime)
                 .createdDate(this.createdDate)
                 .modifiedTime(this.modifiedTime)
