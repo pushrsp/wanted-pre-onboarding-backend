@@ -126,6 +126,22 @@ class ArticleServiceTest extends IntegrationTestSupport {
         //then
         Optional<Article> optionalArticle = articleRepository.findById(savedArticle.getId());
         assertThat(optionalArticle.isEmpty()).isTrue();
+
+        Optional<Content> optionalContent = contentRepository.findByArticleId(savedArticle.getId());
+        assertThat(optionalContent.isEmpty()).isTrue();
+    }
+
+    @DisplayName("ArticleId를 통해 조회 시 데이터가 없으면 예외를 던진다.")
+    @Test
+    public void can_detect_article_is_existed_by_articleId() throws Exception {
+        //given
+
+        //when
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.getById(0L), IllegalArgumentException.class);
+
+        //then
+        assertThat(illegalArgumentException).isNotNull();
+        assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {
