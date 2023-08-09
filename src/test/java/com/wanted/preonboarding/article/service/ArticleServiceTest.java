@@ -6,6 +6,7 @@ import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
 import com.wanted.preonboarding.common.service.date.DateService;
+import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.content.infra.ContentRepository;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.infra.MemberRepository;
@@ -89,6 +90,21 @@ class ArticleServiceTest extends IntegrationTestSupport {
         assertThat(updatedArticle.getTitle()).isEqualTo(request.getTitle());
         assertThat(updatedArticle.getContent().getContent()).isEqualTo(request.getContent());
         assertThat(updatedArticle.getModifiedTime()).isAfter(savedArticle.getModifiedTime());
+    }
+
+    @DisplayName("ArticleId를 통해 content를 찾을 수 있다.")
+    @Test
+    public void can_find_content_by_articleId() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
+        Article savedArticle = saveArticle(now, "title", "content");
+
+        //when
+        Content content = articleService.getById(savedArticle.getId());
+
+        //then
+        assertThat(content.getContent()).isEqualTo(savedArticle.getContent().getContent());
+        assertThat(content.getId()).isEqualTo(savedArticle.getContent().getId());
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {
