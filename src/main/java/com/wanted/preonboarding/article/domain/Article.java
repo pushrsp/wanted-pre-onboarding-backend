@@ -4,9 +4,11 @@ import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 public class Article {
@@ -31,5 +33,25 @@ public class Article {
     public void addContent(Content content) {
         this.content = content;
         this.content.addArticle(this);
+    }
+
+    public boolean isWrittenByMe(Long memberId) {
+        return Objects.equals(this.member.getId(), memberId);
+    }
+
+    public void updateTitle(String title) {
+        if(hasText(title)) {
+            this.title = title;
+        }
+    }
+
+    public void updateContent(String content) {
+        if(hasText(content)) {
+            this.content.updateContent(content);
+        }
+    }
+
+    private boolean hasText(String text) {
+        return StringUtils.hasText(text);
     }
 }
