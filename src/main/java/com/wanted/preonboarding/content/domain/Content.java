@@ -20,4 +20,9 @@ public class Content {
     public void addArticle(Article article) {
         this.article = article;
     }
+
+    //Article 도메인을 통해 접근해야됨!
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
