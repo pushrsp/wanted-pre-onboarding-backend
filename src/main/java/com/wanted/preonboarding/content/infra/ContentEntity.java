@@ -35,6 +35,7 @@ public class ContentEntity {
 
     public static ContentEntity from(Content content) {
         return ContentEntity.builder()
+                .id(content.getId())
                 .content(content.getContent())
                 .build();
     }
