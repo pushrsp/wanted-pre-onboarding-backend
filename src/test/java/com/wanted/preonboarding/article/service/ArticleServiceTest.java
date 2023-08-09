@@ -134,14 +134,56 @@ class ArticleServiceTest extends IntegrationTestSupport {
     @DisplayName("ArticleId를 통해 조회 시 데이터가 없으면 예외를 던진다.")
     @Test
     public void can_detect_article_is_existed_by_articleId() throws Exception {
-        //given
-
         //when
         IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.getById(0L), IllegalArgumentException.class);
 
         //then
         assertThat(illegalArgumentException).isNotNull();
         assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
+    }
+
+    @DisplayName("Article 변경 시 title이 없으면 title은 무시된다.")
+    @Test
+    public void can_ignore_title_when_title_is_empty() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
+        Article savedArticle = saveArticle(now, "title", "content");
+
+        ArticleUpdateServiceRequest request = ArticleUpdateServiceRequest.builder()
+                .content("updatedContent")
+                .memberId(savedArticle.getMember().getId())
+                .articleId(savedArticle.getId())
+                .build();
+
+        //when
+        Article updatedArticle = articleService.update(request);
+
+        //then
+        assertThat(updatedArticle.getTitle()).isEqualTo(savedArticle.getTitle());
+        assertThat(updatedArticle.getContent().getContent()).isEqualTo(request.getContent());
+        assertThat(updatedArticle.getModifiedTime()).isAfter(savedArticle.getModifiedTime());
+    }
+
+    @DisplayName("Article 변경 시 content가 없으면 content은 무시된다.")
+    @Test
+    public void can_ignore_content_when_content_is_empty() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
+        Article savedArticle = saveArticle(now, "title", "content");
+
+        ArticleUpdateServiceRequest request = ArticleUpdateServiceRequest.builder()
+                .title("updatedTitle")
+                .memberId(savedArticle.getMember().getId())
+                .articleId(savedArticle.getId())
+                .build();
+
+        //when
+        Article updatedArticle = articleService.update(request);
+
+        //then
+        assertThat(updatedArticle.getTitle()).isEqualTo(request.getTitle());
+        assertThat(updatedArticle.getContent().getContent()).isEqualTo(savedArticle.getContent().getContent());
+        assertThat(updatedArticle.getModifiedTime()).isAfter(savedArticle.getModifiedTime());
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {
