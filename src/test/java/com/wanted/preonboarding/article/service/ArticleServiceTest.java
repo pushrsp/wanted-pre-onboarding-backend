@@ -235,7 +235,7 @@ class ArticleServiceTest extends IntegrationTestSupport {
 
         ArticleDeleteServiceRequest request = ArticleDeleteServiceRequest.builder()
                 .articleId(savedArticle.getId())
-                .memberId(2L)
+                .memberId(0L)
                 .build();
 
         //when
@@ -255,7 +255,7 @@ class ArticleServiceTest extends IntegrationTestSupport {
 
         ArticleDeleteServiceRequest request = ArticleDeleteServiceRequest.builder()
                 .memberId(savedArticle.getMember().getId())
-                .articleId(3L)
+                .articleId(0L)
                 .build();
 
         //when
