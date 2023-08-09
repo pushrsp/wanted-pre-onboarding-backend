@@ -186,6 +186,27 @@ class ArticleServiceTest extends IntegrationTestSupport {
         assertThat(updatedArticle.getModifiedTime()).isAfter(savedArticle.getModifiedTime());
     }
 
+    @DisplayName("내가 작성한 게시글만 수정할 수 있다.")
+    @Test
+    public void can_not_update_article_that_is_not_written_by_me() throws Exception {
+        //given
+        LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
+        Article savedArticle = saveArticle(now, "title", "content");
+
+        ArticleUpdateServiceRequest request = ArticleUpdateServiceRequest.builder()
+                .title("updatedTitle")
+                .memberId(2L)
+                .articleId(savedArticle.getId())
+                .build();
+
+        //when
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.update(request), IllegalArgumentException.class);
+
+        //then
+        assertThat(illegalArgumentException).isNotNull();
+        assertThat(illegalArgumentException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
+    }
+
     private Article saveArticle(LocalDateTime now, String title, String content) {
         Long memberId = saveMember(createMemberDomain("abc@naver.com", "password", now));
         ArticleCreateServiceRequest request = ArticleCreateServiceRequest.builder()
