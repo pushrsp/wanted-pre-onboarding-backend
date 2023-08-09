@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.article.domain;
 
+import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.member.domain.Member;
 import lombok.Builder;
@@ -21,10 +22,11 @@ public class Article {
     private LocalDateTime modifiedTime;
 
     @Builder
-    private Article(Long id, String title, Member member, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime) {
+    private Article(Long id, String title, Member member, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Content content) {
         this.id = id;
         this.title = title;
         this.member = member;
+        this.content = content;
         this.createdTime = createdTime;
         this.createdDate = createdDate;
         this.modifiedTime = modifiedTime;
@@ -49,6 +51,10 @@ public class Article {
         if(hasText(content)) {
             this.content.updateContent(content);
         }
+    }
+
+    public void updateModifiedTime(DateService dateService) {
+        this.modifiedTime = dateService.getDateTime();
     }
 
     private boolean hasText(String text) {

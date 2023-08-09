@@ -13,7 +13,7 @@ public class ContentRepositoryImpl implements ContentRepository {
 
     @Override
     public Optional<Content> findByArticleId(Long articleId) {
-        return contentJpaRepository.findByArticleId(articleId).map(ContentEntity::toDomainWithArticle);
+        return contentJpaRepository.findByArticleId(articleId).map(ContentEntity::toDomain);
     }
 
     @Override
