@@ -1,7 +1,9 @@
 package com.wanted.preonboarding.article.service.request;
 
+import com.wanted.preonboarding.article.domain.Article;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 @Getter
 public class ArticleUpdateServiceRequest {
@@ -16,5 +18,13 @@ public class ArticleUpdateServiceRequest {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
+    }
+
+    public boolean isAllBlank() {
+        return !StringUtils.hasText(this.title) && !StringUtils.hasText(this.content);
+    }
+
+    public boolean isUpdated(Article article) {
+        return !(this.title.equals(article.getTitle()) && this.content.equals(article.getContent().getContent()));
     }
 }
