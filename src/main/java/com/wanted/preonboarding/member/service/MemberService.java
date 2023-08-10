@@ -27,13 +27,13 @@ public class MemberService {
     private Long offset;
 
     @Transactional
-    public void create(MemberCreateServiceRequest request) {
+    public Long create(MemberCreateServiceRequest request) {
         verifyMember(request);
 
         Member member = request.toDomain(dateService);
         member.signup(passwordService);
 
-        memberRepository.save(member);
+        return memberRepository.save(member).getId();
     }
 
     @Transactional(readOnly = true)
