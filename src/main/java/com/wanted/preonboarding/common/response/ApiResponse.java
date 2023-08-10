@@ -1,8 +1,10 @@
 package com.wanted.preonboarding.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
 public class ApiResponse<T> {
     private T data;
     private String message;
