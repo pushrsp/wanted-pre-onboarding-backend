@@ -27,7 +27,7 @@ public class MemberService {
     private Long offset;
 
     @Transactional
-    public Long create(MemberCreateServiceRequest request) {
+    public Long save(MemberCreateServiceRequest request) {
         verifyMember(request);
 
         Member member = request.toDomain(dateService);
