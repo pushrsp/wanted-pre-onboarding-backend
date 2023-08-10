@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ArticleCreateControllerResponse {
+public class ArticleWriteControllerResponse {
     private Long articleId;
 
     @Builder
-    private ArticleCreateControllerResponse(Long articleId) {
+    private ArticleWriteControllerResponse(Long articleId) {
         this.articleId = articleId;
     }
 
-    public static ArticleCreateControllerResponse from(Article article) {
-        return ArticleCreateControllerResponse.builder()
+    public static ArticleWriteControllerResponse from(Article article) {
+        return ArticleWriteControllerResponse.builder()
                 .articleId(article.getId())
                 .build();
     }

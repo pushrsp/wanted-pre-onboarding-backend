@@ -49,9 +49,11 @@ public class ArticleService {
     }
 
     @Transactional
-    public void delete(ArticleDeleteServiceRequest request) {
+    public Article delete(ArticleDeleteServiceRequest request) {
         Article article = getMyArticleById(request.getArticleId(), request.getMemberId());
         articleRepository.delete(article.getId());
+
+        return article;
     }
 
     //FIXME: 예외
