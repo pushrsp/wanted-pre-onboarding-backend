@@ -6,7 +6,7 @@ import com.wanted.preonboarding.article.controller.response.ArticleReadOneContro
 import com.wanted.preonboarding.article.controller.response.ArticleWriteControllerResponse;
 import com.wanted.preonboarding.article.service.ArticleService;
 import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
-import com.wanted.preonboarding.common.config.argumentresolver.Auth;
+import com.wanted.preonboarding.common.argumentresolver.Auth;
 import com.wanted.preonboarding.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
