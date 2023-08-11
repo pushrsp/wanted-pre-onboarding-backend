@@ -13,4 +13,11 @@ public class ArticleDeleteServiceRequest {
         this.memberId = memberId;
         this.articleId = articleId;
     }
+
+    public static ArticleDeleteServiceRequest from(Long memberId, Long articleId) {
+        return ArticleDeleteServiceRequest.builder()
+                .memberId(memberId)
+                .articleId(articleId)
+                .build();
+    }
 }

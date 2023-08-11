@@ -33,7 +33,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest request = createMemberCreateServiceRequest("abc@naver.com", "password");
 
         //when
-        memberService.create(request);
+        memberService.save(request);
 
         //then
         Optional<Member> optionalMember = memberRepository.findByEmail(request.getEmail());
@@ -48,7 +48,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest request = createMemberCreateServiceRequest("fdsafsda", "password");
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.create(request), IllegalArgumentException.class);
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.save(request), IllegalArgumentException.class);
 
         //then
         assertThat(illegalArgumentException).isNotNull();
@@ -62,7 +62,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest request = createMemberCreateServiceRequest("fsa@naver.com", "123");
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.create(request), IllegalArgumentException.class);
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.save(request), IllegalArgumentException.class);
 
         //then
         assertThat(illegalArgumentException).isNotNull();
@@ -76,10 +76,10 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest r1 = createMemberCreateServiceRequest("fsa@naver.com", "password");
         MemberCreateServiceRequest r2 = createMemberCreateServiceRequest("fsa@naver.com", "password");
 
-        memberService.create(r1);
+        memberService.save(r1);
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.create(r2), IllegalArgumentException.class);
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.save(r2), IllegalArgumentException.class);
 
         //then
         assertThat(illegalArgumentException).isNotNull();
@@ -91,7 +91,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     public void can_login_by_MemberLoginServiceRequest() throws Exception {
         //given
         MemberCreateServiceRequest memberCreateServiceRequest = createMemberCreateServiceRequest("abc@naver.com", "password");
-        memberService.create(memberCreateServiceRequest);
+        memberService.save(memberCreateServiceRequest);
 
         MemberLoginServiceRequest memberLoginServiceRequest = createMemberLoginServiceRequest("abc@naver.com", "password");
 
@@ -107,7 +107,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     public void can_not_login_by_non_existed_email() throws Exception {
         //given
         MemberCreateServiceRequest memberCreateServiceRequest = createMemberCreateServiceRequest("abc@naver.com", "password");
-        memberService.create(memberCreateServiceRequest);
+        memberService.save(memberCreateServiceRequest);
 
         MemberLoginServiceRequest memberLoginServiceRequest = createMemberLoginServiceRequest("abc21@naver.com", "password");
 
@@ -124,7 +124,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     public void can_not_login_by_different_password() throws Exception {
         //given
         MemberCreateServiceRequest memberCreateServiceRequest = createMemberCreateServiceRequest("abc@naver.com", "password");
-        memberService.create(memberCreateServiceRequest);
+        memberService.save(memberCreateServiceRequest);
 
         MemberLoginServiceRequest memberLoginServiceRequest = createMemberLoginServiceRequest("abc@naver.com", "password32131");
 

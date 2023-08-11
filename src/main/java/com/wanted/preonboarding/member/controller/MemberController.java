@@ -18,7 +18,7 @@ public class MemberController {
 
     @PostMapping("/api/members/signup")
     public ApiResponse<Long> signup(@Valid @RequestBody MemberCreateControllerRequest request) {
-        return ApiResponse.ok(memberService.create(request.toServiceRequest()));
+        return ApiResponse.ok(memberService.save(request.toServiceRequest()));
     }
 
     @PostMapping("/api/members/login")

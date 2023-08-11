@@ -32,7 +32,14 @@ public class ArticleService {
 
     @Transactional
     public Article update(ArticleUpdateServiceRequest request) {
+        if(request.isAllBlank()) {
+            throw new IllegalArgumentException("제목 또는 본문을 입력해주세요.");
+        }
+
         Article article = getMyArticleById(request.getArticleId(), request.getMemberId());
+        if(!request.isUpdated(article)) {
+            return article;
+        }
 
         article.updateTitle(request.getTitle());
         article.updateContent(request.getContent());
@@ -42,9 +49,11 @@ public class ArticleService {
     }
 
     @Transactional
-    public void delete(ArticleDeleteServiceRequest request) {
+    public Article delete(ArticleDeleteServiceRequest request) {
         Article article = getMyArticleById(request.getArticleId(), request.getMemberId());
         articleRepository.delete(article.getId());
+
+        return article;
     }
 
     //FIXME: 예외

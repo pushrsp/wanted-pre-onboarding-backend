@@ -2,7 +2,13 @@ package com.wanted.preonboarding.common.service.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 public class JwtService implements TokenService {
@@ -19,12 +25,31 @@ public class JwtService implements TokenService {
     }
 
     @Override
-    public String extract() {
-        return null;
+    //FIXME: 예외
+    public String extract(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if(!StringUtils.hasText(authorization)) {
+            throw new IllegalArgumentException("접근할 수 없는 페이지 입니다.");
+        }
+
+        String[] tokens = authorization.split(" ");
+        if(tokens.length != 2) {
+            throw new IllegalArgumentException("접근할 수 없는 페이지 입니다.");
+        }
+
+        return tokens[1];
     }
 
     @Override
-    public String get() {
-        return null;
+    //FIXME: 예외
+    public String verify(String token, String secret) {
+        try {
+            DecodedJWT info = JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
+            return info.getClaim("data").asString();
+        } catch (TokenExpiredException e) {
+            throw new IllegalStateException("접근할 수 없는 페이지 입니다.");
+        } catch (JWTDecodeException | SignatureVerificationException e) {
+            throw new IllegalArgumentException("접근할 수 없는 페이지 입니다.");
+        }
     }
 }
