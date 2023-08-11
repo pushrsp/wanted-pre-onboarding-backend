@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.member.infra;
 
+import com.wanted.preonboarding.common.exception.WrongIdFormatException;
 import com.wanted.preonboarding.common.utils.IdUtils;
 import com.wanted.preonboarding.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Optional<Member> findById(String id) {
         if(!IdUtils.isOnlyNumber(id)) {
-            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+            throw new WrongIdFormatException("id 형식이 잘못되었습니다.");
         }
 
         return memberJpaRepository.findById(Long.parseLong(id)).map(MemberEntity::toDomain);

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.content.infra;
 
+import com.wanted.preonboarding.common.exception.WrongIdFormatException;
 import com.wanted.preonboarding.common.utils.IdUtils;
 import com.wanted.preonboarding.content.domain.Content;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class ContentRepositoryImpl implements ContentRepository {
     @Override
     public Optional<Content> findByArticleId(String articleId) {
         if(!IdUtils.isOnlyNumber(articleId)) {
-            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+            throw new WrongIdFormatException("id 형식이 잘못되었습니다.");
         }
 
         return contentJpaRepository.findByArticleId(Long.parseLong(articleId)).map(ContentEntity::toDomain);
