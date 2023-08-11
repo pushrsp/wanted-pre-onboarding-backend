@@ -25,6 +25,15 @@ public class ArticleUpdateServiceRequest {
     }
 
     public boolean isUpdated(Article article) {
-        return !(this.title.equals(article.getTitle()) && this.content.equals(article.getContent().getContent()));
+        boolean updated = false;
+        if(this.title != null && !this.title.equals(article.getTitle())) {
+            updated = true;
+        }
+
+        if(this.content != null && !this.content.equals(article.getContent().getContent())) {
+            updated = true;
+        }
+
+        return updated;
     }
 }

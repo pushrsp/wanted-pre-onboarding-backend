@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.common.config.argumentresolver;
+package com.wanted.preonboarding.common.argumentresolver;
 
 import com.wanted.preonboarding.common.service.token.TokenService;
 import lombok.RequiredArgsConstructor;
