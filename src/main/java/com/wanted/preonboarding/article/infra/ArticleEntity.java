@@ -54,17 +54,23 @@ public class ArticleEntity {
 
     public static ArticleEntity from(Article article) {
         ArticleEntity articleEntity = ArticleEntity.builder()
-                .id(article.getId())
                 .title(article.getTitle())
                 .createdTime(article.getCreatedTime())
                 .createdDate(article.getCreatedDate())
                 .modifiedTime(article.getModifiedTime())
                 .build();
 
+        articleEntity.setId(article.getId());
         articleEntity.addMember(MemberEntity.from(article.getMember()));
         articleEntity.addContent(ContentEntity.from(article.getContent()));
 
         return articleEntity;
+    }
+
+    private void setId(String id) {
+        if(id != null) {
+            this.id = Long.parseLong(id);
+        }
     }
 
     private void addMember(MemberEntity member) {
@@ -79,7 +85,7 @@ public class ArticleEntity {
 
     public Article toDomain() {
         return Article.builder()
-                .id(this.id)
+                .id(this.id != null ? this.id.toString() : null)
                 .title(this.title)
                 .createdTime(this.createdTime)
                 .createdDate(this.createdDate)
@@ -89,7 +95,7 @@ public class ArticleEntity {
 
     public Article toDomainWithMemberAndContent() {
         return Article.builder()
-                .id(this.id)
+                .id(this.id.toString())
                 .title(this.title)
                 .member(this.member.toDomain())
                 .content(this.content.toDomain())

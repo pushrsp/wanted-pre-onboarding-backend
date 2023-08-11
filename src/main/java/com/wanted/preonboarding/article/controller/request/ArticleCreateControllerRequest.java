@@ -22,7 +22,7 @@ public class ArticleCreateControllerRequest {
         this.content = content;
     }
 
-    public ArticleCreateServiceRequest toServiceRequest(Long memberId) {
+    public ArticleCreateServiceRequest toServiceRequest(String memberId) {
         return ArticleCreateServiceRequest.builder()
                 .title(this.title)
                 .content(this.content)

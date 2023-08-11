@@ -20,24 +20,24 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/api/articles")
-    public ApiResponse<ArticleWriteControllerResponse> create(@Valid @RequestBody ArticleCreateControllerRequest request, @Auth Long memberId) {
+    public ApiResponse<ArticleWriteControllerResponse> create(@Valid @RequestBody ArticleCreateControllerRequest request, @Auth String memberId) {
         return ApiResponse.ok(ArticleWriteControllerResponse.from(articleService.save(request.toServiceRequest(memberId))));
     }
 
     @PatchMapping("/api/articles/{articleId}")
-    public ApiResponse<ArticleWriteControllerResponse> update(@PathVariable @NotBlank(message = "수정 권한이 존재하지 않습니다.") Long articleId,
+    public ApiResponse<ArticleWriteControllerResponse> update(@PathVariable @NotBlank(message = "접근할 수 없는 페이지입니다.") String articleId,
                                                               @RequestBody ArticleUpdateControllerRequest request,
-                                                              @Auth Long memberId) {
+                                                              @Auth String memberId) {
         return ApiResponse.ok(ArticleWriteControllerResponse.from(articleService.update(request.toServiceRequest(memberId, articleId))));
     }
 
     @DeleteMapping("/api/articles/{articleId}")
-    public ApiResponse<ArticleWriteControllerResponse> delete(@PathVariable @NotBlank(message = "수정 권한이 존재하지 않습니다.") Long articleId, @Auth Long memberId) {
+    public ApiResponse<ArticleWriteControllerResponse> delete(@PathVariable @NotBlank(message = "접근할 수 없는 페이지입니다.") String articleId, @Auth String memberId) {
         return ApiResponse.ok(ArticleWriteControllerResponse.from(articleService.delete(ArticleDeleteServiceRequest.from(memberId, articleId))));
     }
 
     @GetMapping("/api/articles/{articleId}")
-    public ApiResponse<ArticleReadOneControllerResponse> getByArticleId(@PathVariable @NotBlank(message = "수정 권한이 존재하지 않습니다.") Long articleId) {
+    public ApiResponse<ArticleReadOneControllerResponse> getByArticleId(@PathVariable @NotBlank(message = "접근할 수 없는 페이지입니다.") String articleId) {
         return ApiResponse.ok(ArticleReadOneControllerResponse.from(articleService.getById(articleId)));
     }
 }

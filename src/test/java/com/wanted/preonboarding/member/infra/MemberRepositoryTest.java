@@ -39,11 +39,11 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
         Member memberDomain = createMemberDomain("abc@naver.com", "test", now);
 
-        Member savedUser = memberRepository.save(memberDomain);
+        Member savedMember = memberRepository.save(memberDomain);
 
         //when
-        Optional<Member> u1 = memberRepository.findById(savedUser.getId());
-        Optional<Member> u2 = memberRepository.findById(0L);
+        Optional<Member> u1 = memberRepository.findById(savedMember.getId());
+        Optional<Member> u2 = memberRepository.findById("0");
 
         //then
         assertThat(u1.isPresent()).isTrue();

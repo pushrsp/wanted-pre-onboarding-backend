@@ -5,6 +5,6 @@ import com.wanted.preonboarding.content.domain.Content;
 import java.util.Optional;
 
 public interface ContentRepository {
-    Optional<Content> findByArticleId(Long articleId);
+    Optional<Content> findByArticleId(String articleId);
     void deleteAllInBatch();
 }

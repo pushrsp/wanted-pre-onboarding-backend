@@ -34,10 +34,19 @@ public class ContentEntity {
     }
 
     public static ContentEntity from(Content content) {
-        return ContentEntity.builder()
-                .id(content.getId())
+        ContentEntity contentEntity = ContentEntity.builder()
                 .content(content.getContent())
                 .build();
+
+        contentEntity.setId(content.getId());
+
+        return contentEntity;
+    }
+
+    private void setId(String id) {
+        if(id != null) {
+            this.id = Long.parseLong(id);
+        }
     }
 
     public void addArticle(ArticleEntity article) {
@@ -46,7 +55,7 @@ public class ContentEntity {
 
     public Content toDomain() {
         return Content.builder()
-                .id(this.id)
+                .id(this.id.toString())
                 .content(this.content)
                 .build();
     }

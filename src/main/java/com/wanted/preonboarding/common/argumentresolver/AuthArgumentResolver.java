@@ -18,7 +18,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAnnotation = parameter.hasParameterAnnotation(Auth.class);
-        boolean isSameType = Long.class.isAssignableFrom(parameter.getParameterType());
+        boolean isSameType = String.class.isAssignableFrom(parameter.getParameterType());
 
         return hasAnnotation && isSameType;
     }
@@ -26,6 +26,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return Long.parseLong(tokenService.verify(tokenService.extract(request), secret));
+        return tokenService.verify(tokenService.extract(request), secret);
     }
 }

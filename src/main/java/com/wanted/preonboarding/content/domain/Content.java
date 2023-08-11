@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class Content {
-    private Long id;
+    private String id;
     private String content;
     private Article article;
 
     @Builder
-    private Content(Long id, String content, Article article) {
+    private Content(String id, String content, Article article) {
         this.id = id;
         this.content = content;
         this.article = article;

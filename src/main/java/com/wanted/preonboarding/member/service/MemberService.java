@@ -27,7 +27,7 @@ public class MemberService {
     private Long offset;
 
     @Transactional
-    public Long save(MemberCreateServiceRequest request) {
+    public String save(MemberCreateServiceRequest request) {
         verifyMember(request);
 
         Member member = request.toDomain(dateService);
@@ -41,7 +41,7 @@ public class MemberService {
         Member member = getByEmail(request.getEmail());
         member.login(request.getPassword(), passwordService);
 
-        return tokenService.generate(member.getId().toString(), secret, offset);
+        return tokenService.generate(member.getId(), secret, offset);
     }
 
     private void verifyMember(MemberCreateServiceRequest request) {

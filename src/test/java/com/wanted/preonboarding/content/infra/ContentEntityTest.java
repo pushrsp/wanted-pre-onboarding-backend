@@ -25,17 +25,17 @@ class ContentEntityTest {
     @Test
     public void content_entity_can_convert_to_content_domain() throws Exception {
         //given
-        ContentEntity contentEntity = ContentEntity.from(createContentDomain(20L, "content"));
+        ContentEntity contentEntity = ContentEntity.from(createContentDomain("20", "content"));
 
         //when
         Content contentDomain = contentEntity.toDomain();
 
         //then
-        assertThat(contentDomain.getId()).isEqualTo(contentEntity.getId());
+        assertThat(contentDomain.getId()).isEqualTo(String.valueOf(contentEntity.getId()));
         assertThat(contentDomain.getContent()).isEqualTo(contentEntity.getContent());
     }
 
-    private Content createContentDomain(Long id, String content) {
+    private Content createContentDomain(String id, String content) {
         return Content.builder()
                 .id(id)
                 .content(content)

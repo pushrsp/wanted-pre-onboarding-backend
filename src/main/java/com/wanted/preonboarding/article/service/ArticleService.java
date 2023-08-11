@@ -26,7 +26,7 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public Content getById(Long articleId) {
+    public Content getById(String articleId) {
         return contentRepository.findByArticleId(articleId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시글입니다."));
     }
 
@@ -57,7 +57,7 @@ public class ArticleService {
     }
 
     //FIXME: 예외
-    private Article getMyArticleById(Long articleId, Long memberId) {
+    private Article getMyArticleById(String articleId, String memberId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시글입니다."));
         if(!article.isWrittenByMe(memberId)) {
             throw new IllegalArgumentException("수정 권한이 존재하지 않습니다.");

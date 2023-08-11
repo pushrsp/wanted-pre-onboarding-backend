@@ -31,7 +31,7 @@ class ArticleControllerTest extends ControllerTestSupport {
         given(tokenService.verify(any(), any()))
                         .willReturn("1");
 
-        Article article = createArticle(1L);
+        Article article = createArticle("1");
         given(articleService.save(any(ArticleCreateServiceRequest.class)))
                 .willReturn(article);
 
@@ -58,7 +58,7 @@ class ArticleControllerTest extends ControllerTestSupport {
         given(tokenService.verify(any(), any()))
                 .willReturn("1");
 
-        Article article = createArticle(1L);
+        Article article = createArticle("1");
         given(articleService.update(any(ArticleUpdateServiceRequest.class)))
                 .willReturn(article);
 
@@ -80,7 +80,7 @@ class ArticleControllerTest extends ControllerTestSupport {
         given(tokenService.verify(any(), any()))
                 .willReturn("1");
 
-        Article article = createArticle(1L);
+        Article article = createArticle("1");
         given(articleService.delete(any(ArticleDeleteServiceRequest.class)))
                 .willReturn(article);
 
@@ -98,7 +98,7 @@ class ArticleControllerTest extends ControllerTestSupport {
     @Test
     public void can_access_detail_article_by_anyone() throws Exception {
         //given
-        Content content = createContent(2L, "test content");
+        Content content = createContent("2", "test content");
         given(articleService.getById(any()))
                 .willReturn(content);
 
@@ -112,13 +112,13 @@ class ArticleControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data.content").value(content.getContent()));
     }
 
-    private Article createArticle(Long id) {
+    private Article createArticle(String id) {
         return Article.builder()
                 .id(id)
                 .build();
     }
 
-    private Content createContent(Long id, String content) {
+    private Content createContent(String id, String content) {
         return Content.builder()
                 .id(id)
                 .content(content)

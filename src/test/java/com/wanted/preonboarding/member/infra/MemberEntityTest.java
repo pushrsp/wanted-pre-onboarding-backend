@@ -31,19 +31,19 @@ class MemberEntityTest {
     public void user_entity_can_convert_to_user_domain() throws Exception {
         //given
         LocalDateTime createdTime = LocalDateTime.of(2023, 8, 7, 13, 57);
-        MemberEntity memberEntity = MemberEntity.from(createMemberDomain(1L, "test@naver.com", "password1234", createdTime));
+        MemberEntity memberEntity = MemberEntity.from(createMemberDomain("1", "test@naver.com", "password1234", createdTime));
 
         //when
         Member memberDomain = memberEntity.toDomain();
 
         //then
-        assertThat(memberDomain.getId()).isEqualTo(memberEntity.getId());
+        assertThat(memberDomain.getId()).isEqualTo(String.valueOf(memberEntity.getId()));
         assertThat(memberDomain.getEmail()).isEqualTo(memberEntity.getEmail());
         assertThat(memberDomain.getPassword()).isEqualTo(memberEntity.getPassword());
         assertThat(memberDomain.getCreatedTime()).isEqualTo(memberEntity.getCreatedTime());
     }
 
-    private Member createMemberDomain(Long id, String email, String password, LocalDateTime createdTime) {
+    private Member createMemberDomain(String id, String email, String password, LocalDateTime createdTime) {
         return Member.builder()
                 .id(id)
                 .email(email)

@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.article.infra;
 
 import com.wanted.preonboarding.article.domain.Article;
+import com.wanted.preonboarding.common.utils.IdUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,13 +27,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void delete(Long id) {
-        articleJpaRepository.deleteById(id);
+    public void delete(String id) {
+        if(!IdUtils.isOnlyNumber(id)) {
+            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+        }
+
+        articleJpaRepository.deleteById(Long.parseLong(id));
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
-        return articleJpaRepository.findById(id).map(ArticleEntity::toDomainWithMemberAndContent);
+    public Optional<Article> findById(String id) {
+        if(!IdUtils.isOnlyNumber(id)) {
+            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+        }
+
+        return articleJpaRepository.findById(Long.parseLong(id)).map(ArticleEntity::toDomainWithMemberAndContent);
     }
 
     @Override

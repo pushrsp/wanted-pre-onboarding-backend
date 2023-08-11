@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class ArticleCreateServiceRequest {
-    private Long memberId;
+    private String memberId;
     private String title;
     private String content;
 
     @Builder
-    private ArticleCreateServiceRequest(Long memberId, String title, String content) {
+    private ArticleCreateServiceRequest(String memberId, String title, String content) {
         this.memberId = memberId;
         this.title = title;
         this.content = content;

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.content.infra;
 
+import com.wanted.preonboarding.common.utils.IdUtils;
 import com.wanted.preonboarding.content.domain.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,8 +13,12 @@ public class ContentRepositoryImpl implements ContentRepository {
     private final ContentJpaRepository contentJpaRepository;
 
     @Override
-    public Optional<Content> findByArticleId(Long articleId) {
-        return contentJpaRepository.findByArticleId(articleId).map(ContentEntity::toDomain);
+    public Optional<Content> findByArticleId(String articleId) {
+        if(!IdUtils.isOnlyNumber(articleId)) {
+            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+        }
+
+        return contentJpaRepository.findByArticleId(Long.parseLong(articleId)).map(ContentEntity::toDomain);
     }
 
     @Override

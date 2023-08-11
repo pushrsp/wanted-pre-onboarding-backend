@@ -23,6 +23,8 @@ class MemberControllerTest extends ControllerTestSupport {
                 .email("abc@naver.com")
                 .password("password")
                 .build();
+        given(memberService.save(any()))
+                .willReturn("1");
 
         //when then
         mockMvc.perform(post("/api/members/signup")
@@ -31,7 +33,7 @@ class MemberControllerTest extends ControllerTestSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value("true"))
-                .andExpect(jsonPath("$.data").isNumber());
+                .andExpect(jsonPath("$.data").isString());
     }
 
     @DisplayName("MemberLoginControllerRequest를 통해 로그인을 할 수 있다.")

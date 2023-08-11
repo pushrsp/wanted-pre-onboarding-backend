@@ -1,10 +1,13 @@
 package com.wanted.preonboarding.member.infra;
 
+import com.wanted.preonboarding.common.utils.IdUtils;
 import com.wanted.preonboarding.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Repository
 @RequiredArgsConstructor
@@ -12,8 +15,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     private final MemberJpaRepository memberJpaRepository;
 
     @Override
-    public Optional<Member> findById(Long id) {
-        return memberJpaRepository.findById(id).map(MemberEntity::toDomain);
+    public Optional<Member> findById(String id) {
+        if(!IdUtils.isOnlyNumber(id)) {
+            throw new IllegalArgumentException("id 형식이 잘못되었습니다.");
+        }
+
+        return memberJpaRepository.findById(Long.parseLong(id)).map(MemberEntity::toDomain);
     }
 
     @Override

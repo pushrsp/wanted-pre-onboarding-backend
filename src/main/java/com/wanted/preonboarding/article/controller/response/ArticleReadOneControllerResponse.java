@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 public class ArticleReadOneControllerResponse {
-    private Long contentId;
+    private String contentId;
     private String content;
 
     @Builder
-    private ArticleReadOneControllerResponse(Long contentId, String content) {
+    private ArticleReadOneControllerResponse(String contentId, String content) {
         this.contentId = contentId;
         this.content = content;
     }

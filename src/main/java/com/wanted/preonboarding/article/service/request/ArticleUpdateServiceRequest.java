@@ -7,13 +7,13 @@ import org.springframework.util.StringUtils;
 
 @Getter
 public class ArticleUpdateServiceRequest {
-    Long memberId;
-    Long articleId;
+    String memberId;
+    String articleId;
     String title;
     String content;
 
     @Builder
-    private ArticleUpdateServiceRequest(Long memberId, Long articleId, String title, String content) {
+    private ArticleUpdateServiceRequest(String memberId, String articleId, String title, String content) {
         this.memberId = memberId;
         this.articleId = articleId;
         this.title = title;
