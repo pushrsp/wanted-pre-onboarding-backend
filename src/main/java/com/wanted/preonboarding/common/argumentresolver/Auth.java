@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.common.config.argumentresolver;
+package com.wanted.preonboarding.common.argumentresolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.common.config.web;
 
-import com.wanted.preonboarding.common.config.argumentresolver.AuthArgumentResolver;
+import com.wanted.preonboarding.common.argumentresolver.AuthArgumentResolver;
 import com.wanted.preonboarding.common.interceptor.auth.AuthInterceptor;
 import com.wanted.preonboarding.common.interceptor.path.PathMatcherInterceptor;
 import com.wanted.preonboarding.common.service.token.TokenService;
