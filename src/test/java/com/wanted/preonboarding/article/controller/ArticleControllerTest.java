@@ -7,6 +7,7 @@ import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
+import com.wanted.preonboarding.content.domain.Content;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -93,9 +94,34 @@ class ArticleControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data.articleId").value(article.getId()));
     }
 
-    private static Article createArticle(Long id) {
+    @DisplayName("누구나 세부 게시글에 접근할 수 있다.")
+    @Test
+    public void can_access_detail_article_by_anyone() throws Exception {
+        //given
+        Content content = createContent(2L, "test content");
+        given(articleService.getById(any()))
+                .willReturn(content);
+
+        //when then
+        mockMvc.perform(get("/api/articles/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.contentId").value(content.getId()))
+                .andExpect(jsonPath("$.data.content").value(content.getContent()));
+    }
+
+    private Article createArticle(Long id) {
         return Article.builder()
                 .id(id)
+                .build();
+    }
+
+    private Content createContent(Long id, String content) {
+        return Content.builder()
+                .id(id)
+                .content(content)
                 .build();
     }
 }
