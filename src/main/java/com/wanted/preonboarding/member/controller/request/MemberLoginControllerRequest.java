@@ -10,10 +10,10 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 public class MemberLoginControllerRequest {
-    @NotBlank(message = "이메일 또는 비밀번호가 일치하지 않습니다.")
+    @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
-    @NotBlank(message = "이메일 또는 비밀번호가 일치하지 않습니다.")
+    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 
     @Builder
