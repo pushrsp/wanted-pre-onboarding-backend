@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "ARTICLE")
+@Table(name = "ARTICLE", indexes = {@Index(name = "idx__covering", columnList = "created_date DESC, article_id DESC, created_time DESC, modified_time DESC, title, member_id")})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArticleEntity {
     @Id

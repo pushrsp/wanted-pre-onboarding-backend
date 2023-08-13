@@ -1,7 +1,9 @@
 package com.wanted.preonboarding.article.controller;
 
 import com.wanted.preonboarding.article.controller.request.ArticleCreateControllerRequest;
+import com.wanted.preonboarding.article.controller.request.ArticlePaginationControllerParams;
 import com.wanted.preonboarding.article.controller.request.ArticleUpdateControllerRequest;
+import com.wanted.preonboarding.article.controller.response.ArticlePaginationControllerResponse;
 import com.wanted.preonboarding.article.controller.response.ArticleReadOneControllerResponse;
 import com.wanted.preonboarding.article.controller.response.ArticleWriteControllerResponse;
 import com.wanted.preonboarding.article.service.ArticleService;
@@ -39,5 +41,10 @@ public class ArticleController {
     @GetMapping("/api/articles/{articleId}")
     public ApiResponse<ArticleReadOneControllerResponse> getByArticleId(@PathVariable @NotBlank(message = "접근할 수 없는 페이지입니다.") String articleId) {
         return ApiResponse.ok(ArticleReadOneControllerResponse.from(articleService.getById(articleId)));
+    }
+
+    @GetMapping("/api/articles")
+    public ApiResponse<ArticlePaginationControllerResponse> findAll(ArticlePaginationControllerParams params) {
+        return ApiResponse.ok(ArticlePaginationControllerResponse.from(params.getSize() + 1, articleService.findAll(params.getPage(), params.getSize() + 1)));
     }
 }

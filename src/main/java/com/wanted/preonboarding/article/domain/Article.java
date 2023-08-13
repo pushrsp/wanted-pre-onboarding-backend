@@ -41,6 +41,16 @@ public class Article {
         return Objects.equals(this.member.getId(), memberId);
     }
 
+    public void addMemberId(String memberId) {
+        this.member = Member.builder()
+                .id(memberId)
+                .build();
+    }
+
+    public void changeEmail(String email) {
+        this.getMember().changeEmail(email);
+    }
+
     public void updateTitle(String title) {
         if(hasText(title)) {
             this.title = title;
