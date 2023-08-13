@@ -6,6 +6,7 @@ import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
+import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.content.infra.ContentRepository;
@@ -198,11 +199,11 @@ class ArticleServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.update(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> articleService.update(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
     }
 
     @DisplayName("존재하지 않은 게시글은 수정할 수 없다.")
@@ -219,11 +220,11 @@ class ArticleServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.update(request), IllegalArgumentException.class);
+        NoResourceFoundException noResourceFoundException = catchThrowableOfType(() -> articleService.update(request), NoResourceFoundException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
+        assertThat(noResourceFoundException).isNotNull();
+        assertThat(noResourceFoundException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
     }
 
     @DisplayName("내가 작성한 게시글만 삭제할 수 있다.")
@@ -239,11 +240,11 @@ class ArticleServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.delete(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> articleService.delete(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
     }
 
     @DisplayName("존재하지 않은 게시글은 삭제할 수 없다.")
@@ -259,11 +260,11 @@ class ArticleServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.delete(request), IllegalArgumentException.class);
+        NoResourceFoundException noResourceFoundException = catchThrowableOfType(() -> articleService.delete(request), NoResourceFoundException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
+        assertThat(noResourceFoundException).isNotNull();
+        assertThat(noResourceFoundException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.member.service;
 
+import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.common.service.password.PasswordService;
 import com.wanted.preonboarding.common.service.token.TokenService;
@@ -46,11 +47,11 @@ public class MemberService {
 
     private void verifyMember(MemberCreateServiceRequest request) {
         if(!request.verifyEmail()) {
-            throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
+            throw new IllegalStateException("이메일 형식이 올바르지 않습니다.");
         }
 
         if(!request.verifyPassword()) {
-            throw new IllegalArgumentException("비밀번호 형식이 올바르지 않습니다.");
+            throw new IllegalStateException("비밀번호 형식이 올바르지 않습니다.");
         }
 
         memberRepository.findByEmail(request.getEmail()).ifPresent((m) -> {
@@ -58,8 +59,7 @@ public class MemberService {
         });
     }
 
-    //FIXME: NotFoundException 변경
     private Member getByEmail(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다."));
+        return memberRepository.findByEmail(email).orElseThrow(() -> new NoResourceFoundException("이메일 또는 비밀번호가 일치하지 않습니다."));
     }
 }
