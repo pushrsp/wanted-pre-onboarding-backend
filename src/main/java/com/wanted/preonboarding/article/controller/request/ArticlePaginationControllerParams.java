@@ -21,9 +21,7 @@ public class ArticlePaginationControllerParams {
             return 0;
         }
 
-        int page = Integer.parseInt(this.page);
-
-        return page == 0 ? 0 : page * getSize() + 1;
+        return Integer.parseInt(this.page) * getSize();
     }
 
     public Integer getSize() {

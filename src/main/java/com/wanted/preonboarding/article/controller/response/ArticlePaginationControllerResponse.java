@@ -20,7 +20,7 @@ public class ArticlePaginationControllerResponse {
     }
 
     public static ArticlePaginationControllerResponse from(Integer size, List<Article> articles) {
-        boolean hasNext = articles.size() > size;
+        boolean hasNext = articles.size() == size;
         List<ArticleResponse> articleResponses = articles.stream()
                 .map(ArticleResponse::from)
                 .collect(Collectors.toList());
