@@ -17,10 +17,10 @@ class ArticleEntityTest {
     public void can_create_article_entity_from_article_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
-        Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
+        Member userDomain = createUserDomain("1", "abc@naver.com", "password", now);
 
         Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain);
-        articleDomain.addContent(createContentDomain(1L, "content"));
+        articleDomain.addContent(createContentDomain("1", "content"));
 
         //when
         ArticleEntity articleEntity = ArticleEntity.from(articleDomain);
@@ -38,31 +38,31 @@ class ArticleEntityTest {
     public void article_entity_can_convert_to_article_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 14, 9);
-        Member userDomain = createUserDomain(1L, "abc@naver.com", "password", now);
+        Member userDomain = createUserDomain("1", "abc@naver.com", "password", now);
 
         Article articleDomain = createArticleDomain(null, "title", now, now.toLocalDate(), now, userDomain);
-        articleDomain.addContent(createContentDomain(1L, "content"));
+        articleDomain.addContent(createContentDomain("1", "content"));
         ArticleEntity articleEntity = ArticleEntity.from(articleDomain);
 
         //when
         Article result = articleEntity.toDomain();
 
         //then
-        assertThat(result.getId()).isEqualTo(articleEntity.getId());
+        assertThat(String.valueOf(result.getId())).isEqualTo(String.valueOf(articleEntity.getId()));
         assertThat(result.getTitle()).isEqualTo(articleEntity.getTitle());
         assertThat(result.getCreatedTime()).isEqualTo(articleEntity.getCreatedTime());
         assertThat(result.getCreatedDate()).isEqualTo(articleEntity.getCreatedDate());
         assertThat(result.getModifiedTime()).isEqualTo(articleEntity.getModifiedTime());
     }
 
-    private Content createContentDomain(Long id, String content) {
+    private Content createContentDomain(String id, String content) {
         return Content.builder()
                 .id(id)
                 .content(content)
                 .build();
     }
 
-    private Member createUserDomain(Long id, String email, String password, LocalDateTime createdTime) {
+    private Member createUserDomain(String id, String email, String password, LocalDateTime createdTime) {
         return Member.builder()
                 .id(id)
                 .email(email)
@@ -71,7 +71,7 @@ class ArticleEntityTest {
                 .build();
     }
 
-    private Article createArticleDomain(Long id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Member member) {
+    private Article createArticleDomain(String id, String title, LocalDateTime createdTime, LocalDate createdDate, LocalDateTime modifiedTime, Member member) {
         return Article.builder()
                 .id(id)
                 .title(title)

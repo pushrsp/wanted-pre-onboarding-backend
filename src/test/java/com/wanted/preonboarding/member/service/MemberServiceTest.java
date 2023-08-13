@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.member.service;
 
 import com.wanted.preonboarding.IntegrationTestSupport;
+import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.infra.MemberRepository;
 import com.wanted.preonboarding.member.service.request.MemberCreateServiceRequest;
@@ -48,11 +49,11 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest request = createMemberCreateServiceRequest("fdsafsda", "password");
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.save(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> memberService.save(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("이메일 형식이 올바르지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("이메일 형식이 올바르지 않습니다.");
     }
 
     @DisplayName("잘못된 비밀번호는 member를 생성할 수 없다.")
@@ -62,11 +63,11 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberCreateServiceRequest request = createMemberCreateServiceRequest("fsa@naver.com", "123");
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.save(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> memberService.save(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("비밀번호 형식이 올바르지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("비밀번호 형식이 올바르지 않습니다.");
     }
 
     @DisplayName("중복된 이메일은 member를 생성할 수 없다.")
@@ -112,11 +113,11 @@ class MemberServiceTest extends IntegrationTestSupport {
         MemberLoginServiceRequest memberLoginServiceRequest = createMemberLoginServiceRequest("abc21@naver.com", "password");
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> memberService.login(memberLoginServiceRequest), IllegalArgumentException.class);
+        NoResourceFoundException noResourceFoundException = catchThrowableOfType(() -> memberService.login(memberLoginServiceRequest), NoResourceFoundException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("이메일 또는 비밀번호가 일치하지 않습니다.");
+        assertThat(noResourceFoundException).isNotNull();
+        assertThat(noResourceFoundException.getMessage()).isEqualTo("이메일 또는 비밀번호가 일치하지 않습니다.");
     }
 
     @DisplayName("비밀번호가 다를 시 로그인을 할 수 없다.")

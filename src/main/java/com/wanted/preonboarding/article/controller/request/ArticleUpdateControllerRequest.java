@@ -17,7 +17,7 @@ public class ArticleUpdateControllerRequest {
         this.content = content;
     }
 
-    public ArticleUpdateServiceRequest toServiceRequest(Long memberId, Long articleId) {
+    public ArticleUpdateServiceRequest toServiceRequest(String memberId, String articleId) {
         return ArticleUpdateServiceRequest.builder()
                 .title(this.title)
                 .content(this.content)

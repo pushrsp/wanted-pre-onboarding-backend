@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 @Getter
 public class Member {
-    private Long id;
+    private String id;
     private String email;
     private String password;
     private LocalDateTime createdTime;
 
     @Builder
-    private Member(Long id, String email, String password, LocalDateTime createdTime) {
+    private Member(String id, String email, String password, LocalDateTime createdTime) {
         this.id = id;
         this.email = email;
         this.password = password;

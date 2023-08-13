@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.wanted.preonboarding.common.exception.ExpiredException;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,6 @@ public class JwtService implements TokenService {
     }
 
     @Override
-    //FIXME: 예외
     public String extract(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         if(!StringUtils.hasText(authorization)) {
@@ -41,13 +41,12 @@ public class JwtService implements TokenService {
     }
 
     @Override
-    //FIXME: 예외
     public String verify(String token, String secret) {
         try {
             DecodedJWT info = JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
             return info.getClaim("data").asString();
         } catch (TokenExpiredException e) {
-            throw new IllegalStateException("접근할 수 없는 페이지 입니다.");
+            throw new ExpiredException("로그인을 다시 해주세요.");
         } catch (JWTDecodeException | SignatureVerificationException e) {
             throw new IllegalArgumentException("접근할 수 없는 페이지 입니다.");
         }

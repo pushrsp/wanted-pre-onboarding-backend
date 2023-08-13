@@ -5,6 +5,7 @@ import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
+import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.content.infra.ContentRepository;
@@ -26,14 +27,14 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public Content getById(Long articleId) {
+    public Content getById(String articleId) {
         return contentRepository.findByArticleId(articleId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시글입니다."));
     }
 
     @Transactional
     public Article update(ArticleUpdateServiceRequest request) {
         if(request.isAllBlank()) {
-            throw new IllegalArgumentException("제목 또는 본문을 입력해주세요.");
+            throw new IllegalStateException("제목 또는 본문을 입력해주세요.");
         }
 
         Article article = getMyArticleById(request.getArticleId(), request.getMemberId());
@@ -56,11 +57,10 @@ public class ArticleService {
         return article;
     }
 
-    //FIXME: 예외
-    private Article getMyArticleById(Long articleId, Long memberId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시글입니다."));
+    private Article getMyArticleById(String articleId, String memberId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new NoResourceFoundException("존재하지 않은 게시글입니다."));
         if(!article.isWrittenByMe(memberId)) {
-            throw new IllegalArgumentException("수정 권한이 존재하지 않습니다.");
+            throw new IllegalStateException("수정 권한이 존재하지 않습니다.");
         }
 
         return article;

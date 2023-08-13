@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ArticleRepository {
     List<Article> findAllByLastId(Long lastId, int limit);
     Article save(Article article);
-    void delete(Long id);
-    Optional<Article> findById(Long id);
+    void delete(String id);
+    Optional<Article> findById(String id);
     void deleteAllInBatch();
 }

@@ -6,6 +6,7 @@ import com.wanted.preonboarding.article.infra.ArticleRepository;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleDeleteServiceRequest;
 import com.wanted.preonboarding.article.service.request.ArticleUpdateServiceRequest;
+import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.content.infra.ContentRepository;
@@ -47,7 +48,7 @@ class ArticleServiceTest extends IntegrationTestSupport {
     public void can_save_article_by_ArticleCreateServiceRequest() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 9, 12, 50);
-        Long memberId = saveMember(createMemberDomain("abc@naver.com", "password", now));
+        String memberId = saveMember(createMemberDomain("abc@naver.com", "password", now));
         String title = "title";
         String content = "content";
 
@@ -133,7 +134,7 @@ class ArticleServiceTest extends IntegrationTestSupport {
     @Test
     public void can_detect_article_is_existed_by_articleId() throws Exception {
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.getById(0L), IllegalArgumentException.class);
+        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.getById("0"), IllegalArgumentException.class);
 
         //then
         assertThat(illegalArgumentException).isNotNull();
@@ -193,16 +194,16 @@ class ArticleServiceTest extends IntegrationTestSupport {
 
         ArticleUpdateServiceRequest request = ArticleUpdateServiceRequest.builder()
                 .title("updatedTitle")
-                .memberId(0L)
+                .memberId("0")
                 .articleId(savedArticle.getId())
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.update(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> articleService.update(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
     }
 
     @DisplayName("존재하지 않은 게시글은 수정할 수 없다.")
@@ -215,15 +216,15 @@ class ArticleServiceTest extends IntegrationTestSupport {
         ArticleUpdateServiceRequest request = ArticleUpdateServiceRequest.builder()
                 .title("updatedTitle")
                 .memberId(savedArticle.getMember().getId())
-                .articleId(0L)
+                .articleId("0")
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.update(request), IllegalArgumentException.class);
+        NoResourceFoundException noResourceFoundException = catchThrowableOfType(() -> articleService.update(request), NoResourceFoundException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
+        assertThat(noResourceFoundException).isNotNull();
+        assertThat(noResourceFoundException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
     }
 
     @DisplayName("내가 작성한 게시글만 삭제할 수 있다.")
@@ -235,15 +236,15 @@ class ArticleServiceTest extends IntegrationTestSupport {
 
         ArticleDeleteServiceRequest request = ArticleDeleteServiceRequest.builder()
                 .articleId(savedArticle.getId())
-                .memberId(0L)
+                .memberId("0")
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.delete(request), IllegalArgumentException.class);
+        IllegalStateException illegalStateException = catchThrowableOfType(() -> articleService.delete(request), IllegalStateException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
+        assertThat(illegalStateException).isNotNull();
+        assertThat(illegalStateException.getMessage()).isEqualTo("수정 권한이 존재하지 않습니다.");
     }
 
     @DisplayName("존재하지 않은 게시글은 삭제할 수 없다.")
@@ -255,19 +256,19 @@ class ArticleServiceTest extends IntegrationTestSupport {
 
         ArticleDeleteServiceRequest request = ArticleDeleteServiceRequest.builder()
                 .memberId(savedArticle.getMember().getId())
-                .articleId(0L)
+                .articleId("0")
                 .build();
 
         //when
-        IllegalArgumentException illegalArgumentException = catchThrowableOfType(() -> articleService.delete(request), IllegalArgumentException.class);
+        NoResourceFoundException noResourceFoundException = catchThrowableOfType(() -> articleService.delete(request), NoResourceFoundException.class);
 
         //then
-        assertThat(illegalArgumentException).isNotNull();
-        assertThat(illegalArgumentException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
+        assertThat(noResourceFoundException).isNotNull();
+        assertThat(noResourceFoundException.getMessage()).isEqualTo("존재하지 않은 게시글입니다.");
     }
 
     private Article saveArticle(LocalDateTime now, String title, String content) {
-        Long memberId = saveMember(createMemberDomain("abc@naver.com", "password", now));
+        String memberId = saveMember(createMemberDomain("abc@naver.com", "password", now));
         ArticleCreateServiceRequest request = ArticleCreateServiceRequest.builder()
                 .memberId(memberId)
                 .title(title)
@@ -291,7 +292,7 @@ class ArticleServiceTest extends IntegrationTestSupport {
         };
     }
 
-    private Long saveMember(Member member) {
+    private String saveMember(Member member) {
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
     }

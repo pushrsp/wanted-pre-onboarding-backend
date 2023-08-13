@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Getter
 public class ArticleWriteControllerResponse {
-    private Long articleId;
+    private String articleId;
 
     @Builder
-    private ArticleWriteControllerResponse(Long articleId) {
+    private ArticleWriteControllerResponse(String articleId) {
         this.articleId = articleId;
     }
 

@@ -43,12 +43,21 @@ public class MemberEntity {
     }
 
     public static MemberEntity from(Member member) {
-        return MemberEntity.builder()
-                .id(member.getId())
+        MemberEntity memberEntity = MemberEntity.builder()
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .createdTime(member.getCreatedTime())
                 .build();
+
+        memberEntity.setId(member.getId());
+
+        return memberEntity;
+    }
+
+    private void setId(String id) {
+        if(id != null) {
+            this.id = Long.parseLong(id);
+        }
     }
 
     public void addArticle(ArticleEntity article) {
@@ -57,7 +66,7 @@ public class MemberEntity {
 
     public Member toDomain() {
         return Member.builder()
-                .id(this.id)
+                .id(this.id.toString())
                 .email(this.email)
                 .password(this.password)
                 .createdTime(this.createdTime)
