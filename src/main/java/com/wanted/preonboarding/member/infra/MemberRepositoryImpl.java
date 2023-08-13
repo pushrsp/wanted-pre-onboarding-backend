@@ -6,9 +6,11 @@ import com.wanted.preonboarding.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,6 +24,13 @@ public class MemberRepositoryImpl implements MemberRepository {
         }
 
         return memberJpaRepository.findById(Long.parseLong(id)).map(MemberEntity::toDomain);
+    }
+
+    @Override
+    public List<Member> findAllByIdIn(List<Long> ids) {
+        return memberJpaRepository.findAllByIdIn(ids).stream()
+                .map(MemberEntity::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
