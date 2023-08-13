@@ -9,15 +9,24 @@ import com.wanted.preonboarding.common.exception.NoResourceFoundException;
 import com.wanted.preonboarding.common.service.date.DateService;
 import com.wanted.preonboarding.content.domain.Content;
 import com.wanted.preonboarding.content.infra.ContentRepository;
+import com.wanted.preonboarding.member.domain.Member;
+import com.wanted.preonboarding.member.infra.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ContentRepository contentRepository;
+    private final MemberRepository memberRepository;
 
     private final DateService dateService;
 
@@ -55,6 +64,25 @@ public class ArticleService {
         articleRepository.delete(article.getId());
 
         return article;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Article> findAll(Integer page, Integer size) {
+        List<Article> articles = articleRepository.findAll(page, size);
+
+        Set<Long> memberIds = articles.stream()
+                .map(a -> Long.parseLong(a.getMember().getId()))
+                .collect(Collectors.toSet());
+
+        List<Member> members = memberRepository.findAllByIdIn(new ArrayList<>(memberIds));
+        aggregate(articles, members);
+
+        return articles;
+    }
+
+    private void aggregate(List<Article> articles, List<Member> members) {
+        Map<String, Member> memberMap = members.stream().collect(Collectors.toMap(Member::getId, m -> m));
+        articles.forEach(a -> a.changeEmail(memberMap.get(a.getMember().getId()).getEmail()));
     }
 
     private Article getMyArticleById(String articleId, String memberId) {

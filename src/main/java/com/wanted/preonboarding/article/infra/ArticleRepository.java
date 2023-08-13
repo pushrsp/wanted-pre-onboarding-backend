@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    List<Article> findAllByLastId(Long lastId, int limit);
+    List<Article> findAll(Integer page, Integer size);
     Article save(Article article);
     void delete(String id);
     Optional<Article> findById(String id);
