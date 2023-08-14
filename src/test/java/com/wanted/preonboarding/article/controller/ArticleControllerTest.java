@@ -2,6 +2,7 @@ package com.wanted.preonboarding.article.controller;
 
 import com.wanted.preonboarding.ControllerTestSupport;
 import com.wanted.preonboarding.article.controller.request.ArticleCreateControllerRequest;
+import com.wanted.preonboarding.article.controller.request.ArticlePaginationControllerParams;
 import com.wanted.preonboarding.article.controller.request.ArticleUpdateControllerRequest;
 import com.wanted.preonboarding.article.domain.Article;
 import com.wanted.preonboarding.article.service.request.ArticleCreateServiceRequest;
@@ -110,6 +111,19 @@ class ArticleControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.contentId").value(content.getId()))
                 .andExpect(jsonPath("$.data.content").value(content.getContent()));
+    }
+
+    @DisplayName("page와 size 파라미터를 통해 페이지네이션을 할 수 있다.")
+    @Test
+    public void can_paginate_article_by_page_and_size() throws Exception {
+        //when then
+        mockMvc.perform(get("/api/articles")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value("true"))
+                .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
     private Article createArticle(String id) {
