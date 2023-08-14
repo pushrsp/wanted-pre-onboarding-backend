@@ -4,10 +4,15 @@ import com.wanted.preonboarding.IntegrationTestSupport;
 import com.wanted.preonboarding.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,9 +20,9 @@ class MemberRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private MemberRepository memberRepository;
 
-    @DisplayName("UserDomain을 통해 User를 생성할 수 있다.")
+    @DisplayName("MemberDomain을 통해 member를 생성할 수 있다.")
     @Test
-    public void can_save_user_by_user_domain() throws Exception {
+    public void can_save_member_by_member_domain() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
         Member memberDomain = createMemberDomain("test@naver.com", "test", now);
@@ -32,9 +37,9 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(savedUser.getCreatedTime()).isEqualTo(memberDomain.getCreatedTime());
     }
 
-    @DisplayName("UserId를 통해 User를 찾을 수 있다.")
+    @DisplayName("UserId를 통해 Member를 찾을 수 있다.")
     @Test
-    public void can_find_user_by_id() throws Exception {
+    public void can_find_member_by_id() throws Exception {
         //given
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
         Member memberDomain = createMemberDomain("abc@naver.com", "test", now);
@@ -50,9 +55,9 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(u2.isPresent()).isFalse();
     }
 
-    @DisplayName("Email을 통해 User를 찾을 수 있다.")
+    @DisplayName("Email을 통해 Member를 찾을 수 있다.")
     @Test
-    public void can_find_user_by_email() throws Exception {
+    public void can_find_member_by_email() throws Exception {
         //given
         String email = "addd@naver.com";
         LocalDateTime now = LocalDateTime.of(2023, 8, 7, 17, 47);
@@ -65,6 +70,31 @@ class MemberRepositoryTest extends IntegrationTestSupport {
 
         //then
         assertThat(findUser.isPresent()).isTrue();
+    }
+
+    @DisplayName("mebmerIds를 통해 member들을 찾을 수 있다.")
+    @ParameterizedTest
+    @MethodSource("provideMemberIds")
+    public void can_find_members_by_ids(int size, List<Long> memberIds, int expected) throws Exception {
+        //given
+        for (int i = 0; i < size; i++) {
+            memberRepository.save(createMemberDomain("test" + i + "@naver.com", "password", LocalDateTime.now()));
+        }
+
+        //when
+        List<Member> members = memberRepository.findAllByIdIn(memberIds);
+
+        //then
+        assertThat(members).hasSize(expected);
+    }
+
+    private static Stream<Arguments> provideMemberIds() {
+        return Stream.of(
+                Arguments.of(10 ,List.of(1L, 1L, 2L, 3L, 4L), 4),
+                Arguments.of(10 ,List.of(1L, 1L, 1L, 1L), 1),
+                Arguments.of(5 ,List.of(1L, 2L, 3L, 4L, 5L), 5),
+                Arguments.of(5 ,List.of(), 0)
+        );
     }
 
     private Member createMemberDomain(String email, String password, LocalDateTime createdTime) {
