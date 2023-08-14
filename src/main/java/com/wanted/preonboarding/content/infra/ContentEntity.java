@@ -20,6 +20,7 @@ public class ContentEntity {
     private Long id;
 
     @Column(name = "content", nullable = false)
+    @Lob
     private String content;
 
     @OneToOne(fetch = FetchType.LAZY)
