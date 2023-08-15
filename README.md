@@ -43,7 +43,7 @@
 CONTENT 테이블을 따로 만들어 ARTICLE 테이블과 1:1 매핑을 해주었습니다.
 
 # API 명세서
-### api/users/signup [POST] -> 회원가입
+### api/members/signup [POST] -> 회원가입
 request body
 ```
 email: string
@@ -56,7 +56,7 @@ data: string
 success: boolean
 ```
 
-### api/users/login [POST] -> 로그인
+### api/members/login [POST] -> 로그인
 request body
 ```
 email: string
