@@ -48,7 +48,7 @@ public class JwtService implements TokenService {
         } catch (TokenExpiredException e) {
             throw new ExpiredException("로그인을 다시 해주세요.");
         } catch (JWTDecodeException | SignatureVerificationException e) {
-            throw new IllegalArgumentException("접근할 수 없는 페이지 입니다.");
+            throw new IllegalArgumentException("토큰 형식이 잘못되었습니다.");
         }
     }
 }
