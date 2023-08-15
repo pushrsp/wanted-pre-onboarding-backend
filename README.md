@@ -6,6 +6,8 @@
 - ./gradlew build
 - java -jar -Dspring.profiles.active=prod ./build/libs/preonboarding-0.0.1-SNAPSHOT.jar
 
+(application-prod.yaml 파일 만들어야 됨)
+
 ## 로컬
 - ./gradlew build
 - java -jar -Dspring.profiles.active=local ./build/libs/preonboarding-0.0.1-SNAPSHOT.jar
@@ -17,10 +19,19 @@
 ![데이터베이스_관계도](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/f02ad30e-5bf5-40e3-85a5-0d29e0a3d596)
 
 # AWS 구조
-![AWS 구조](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/8e3377ee-0aac-4321-8a0b-c7bca993efff)
+![AWS 구조](https://github.com/pushrsp/wanted-pre-onboarding-backend/assets/58874665/b41d13f6-3629-4233-b1f6-679b64217454)
+
+- 회원가입 http://118.67.131.243:8080/api/members/signup [POST]
+- 로그인 http://118.67.131.243:8080/api/members/login [POST]
+- 게시글 생성 http://118.67.131.243:8080/api/articles [POST]
+- 게시글 조회 http://118.67.131.243:8080/api/articles?page={{page}}&size={{size}} [GET]
+- 게시글 수정 http://118.67.131.243:8080/api/articles/{{articleId}} [PATCH]
+- 게시글 삭제 http://118.67.131.243:8080/api/articles/{{articleId}} [DELETE]
+- 게시글 세부 조회 http://118.67.131.243:8080/api/articles/{{articleId}} [GET]
+
 
 # 데모 영상 링크
-TODO
+[![데모 영상](http://img.youtube.com/vi/1BKwWndzg8I/0.jpg)](https://youtu.be/1BKwWndzg8I)
 
 # 구현 방법 및 이유에 대한 간략한 설명
 도메인과 엔티티를 구분하여 작성했습니다. 그 엔티티는 데이터베이스 테이블과 1:1 매핑되는 클래스이고,
@@ -33,28 +44,117 @@ CONTENT 테이블을 따로 만들어 ARTICLE 테이블과 1:1 매핑을 해주�
 
 # API 명세서
 ### api/users/signup [POST] -> 회원가입
-- email: @ 포함
-- password: 8자 이상, 암호화
+request body
+```
+email: string
+password: string
+```
+
+response
+```
+data: string
+success: boolean
+```
 
 ### api/users/login [POST] -> 로그인
-- email, password 이용, 유효성 검사
-- JWT 토큰 생성
+request body
+```
+email: string
+password: string
+```
+
+response
+```
+data: string
+success: boolean
+```
 
 ### api/articles [POST] -> 게시글 생성
-- title: 게시글 제목
-- content: 게시글 본문
+request header
+```
+Authorization: Bearer {{token}}
+```
+
+request body
+```
+title: string
+content: string
+```
+
+response
+```
+data: {
+    articleId: string
+}
+success: boolean
+```
 
 ### api/articles [GET] -> 게시글 조회
-- limit: 사이즈
-- offset: 페이지
+request params
+```
+page: int (optional)
+size: int (optional)
+```
+
+response
+```
+data: {
+    hasNext: boolean
+    articles: [
+        {
+            articleId: string
+            title: string
+            writerId: string
+            wrtierEmail: string
+            createdTime: date
+            modifiedTime: date
+        },
+        ...
+    ]
+} 
+success: boolean
+```
 
 ### api/articles/{articleId} [GET] -> 특정 게시글 조회
-- 게시글 ID 입력
+response
+```
+data: {
+    contentId: string
+    content: string
+}
+success: boolean
+```
 
 ### api/articles/{articleId} [PATCH] -> 특정 게시글 수정
-- 게시글 ID 입력
-- 작성자만 수정 가능
+request header
+```
+Authorization: Bearer {{token}}
+```
+
+request body
+```
+title: string (optional)
+content: string (optional)
+```
+
+response
+```
+data: {
+    articleId: string
+}
+success: boolean
+```
 
 ### api/articles/{articleId} [DELETE] -> 특정 게시글 삭제
-- 게시글 ID 입력
-- 작성자만 삭제 가능
+request header
+```
+Authorization: Bearer {{token}}
+```
+
+response
+```
+data: {
+    articleId: string
+}
+success: boolean
+```
