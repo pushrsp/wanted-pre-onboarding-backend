@@ -37,3 +37,4 @@ out/
 .vscode/
 
 application-prod.yaml
+.DS_Store
